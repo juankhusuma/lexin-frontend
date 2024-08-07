@@ -19,7 +19,7 @@ RUN pnpm fetch
 COPY . .
 
 # Install dependencies
-RUN pnpm install -r --offline
+RUN pnpm install
 
 # Build the Next.js application
 RUN pnpm build

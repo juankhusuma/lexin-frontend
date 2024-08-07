@@ -19,13 +19,10 @@ RUN pnpm fetch
 COPY . .
 
 # Install dependencies
-RUN pnpm install -r --offline
-
-# Build the Next.js application
-RUN pnpm build
+RUN pnpm install
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Start the Next.js application
-CMD ["pnpm", "start"]
+CMD ["pnpm", "run", "dev"]
