@@ -19,7 +19,7 @@ export default function LandingPage() {
         </Button>
       </Box>
       <Box className="flex items-center justify-center w-1/2">
-        <Image src="/hero-landing-page.png" alt="" width={550} height={550}/>
+        <Image src="/hero-landing-page.png" alt="" width={750} height={550}/>
       </Box>
 
     </Box>
