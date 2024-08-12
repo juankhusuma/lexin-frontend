@@ -23,6 +23,11 @@ export const themeOptions: ThemeOptions = {
     },
     divider: 'rgba(0,0,0,0.1)',
   },
+  typography: {
+    button: {
+      textTransform: 'none'
+    }
+  }
 };
 
 const LexinLightTheme = createTheme(themeOptions)

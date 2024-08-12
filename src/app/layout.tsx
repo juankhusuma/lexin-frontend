@@ -15,7 +15,7 @@ export default function RootLayout({
       <ThemeProvider theme={LexinLightTheme}>
         <body>
           <Navbar />
-          <main className="bg-offwhite min-h-screen">
+          <main className="bg-offwhite min-h-screen pt-24">
             {children}
           </main>
         </body>
