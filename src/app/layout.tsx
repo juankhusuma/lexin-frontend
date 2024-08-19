@@ -1,9 +1,8 @@
 "use client"
 
-import { ThemeProvider } from '@mui/material/styles';
-import { LexinLightTheme } from "@/utils/theme/theme";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import LexinThemeProvider from "./utils/theme";
 
 export default function RootLayout({
   children,
@@ -12,14 +11,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ThemeProvider theme={LexinLightTheme}>
         <body>
           <Navbar />
-          <main className="bg-offwhite min-h-screen pt-24">
-            {children}
-          </main>
+          <LexinThemeProvider>
+            <main className="bg-offwhite min-h-screen pt-24">
+              {children}
+            </main>
+          </LexinThemeProvider>
         </body>
-      </ThemeProvider>
     </html>
   );
 }

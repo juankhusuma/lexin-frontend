@@ -3,6 +3,8 @@ interface ButtonProps {
     onClick: () => void
     type: "button" | "reset" | "submit"
     className?: string
+    disabled?: boolean
+    loading?: boolean
 }
 
 export default ButtonProps
