@@ -1,7 +1,6 @@
 import InputFieldProps from "./InputFieldProps"
 
-export default function LexinFormTextField({label, controlValue, controlOnChange, placeholder} : InputFieldProps) {
-    
+export default function LexinFormPasswordField({label, controlValue, controlOnChange, placeholder} : InputFieldProps) {    
     const placeholderString = placeholder ?? "Enter text here"
     
     return (
@@ -9,7 +8,7 @@ export default function LexinFormTextField({label, controlValue, controlOnChange
             <span className="mb-1 font-semibold"> {label} </span>
             <div className="">
                 <input
-                    type="text"
+                    type="password"
                     placeholder={placeholderString}
                     value={controlValue}
                     onChange={e => controlOnChange(e.target.value)}
