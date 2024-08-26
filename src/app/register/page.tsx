@@ -20,7 +20,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex justify-center items-center h-full w-full">
-            <div className="bg-[#FFFFFF] py-5 px-6 flex flex-col items-center rounded-xl shadow-xl w-[300px] translate-y-12">
+            <div className="bg-[#FFFFFF] py-5 px-6 flex flex-col items-center rounded-xl shadow-xl w-[600px] translate-y-12">
                 <div className="flex flex-col items-center">
                     <h1 className="text-2xl font-bold">
                         Daftar

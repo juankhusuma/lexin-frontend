@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex justify-center items-center">
-            <div className="bg-[#FFFFFF] py-5 px-6 flex flex-col items-center rounded-xl shadow-xl w-[300px] translate-y-12">
+            <div className="bg-[#FFFFFF] py-5 px-6 flex flex-col items-center rounded-xl shadow-xl w-[600px] translate-y-12">
                 <div className="flex flex-col items-center">
                     <h1 className="text-2xl font-bold">
                         Masuk
@@ -40,7 +40,7 @@ export default function LoginPage() {
                         controlValue={passwordInput}
                         controlOnChange={changePasswordInput}
                     />
-                    <PrimaryButton label="Masuk" onClick={() => console.log("on submit")} type="submit" className="mt-5"/> 
+                    <PrimaryButton loading={true} label="Masuk" onClick={() => console.log("on submit")} type="submit" className="mt-5"/> 
                 </form>
             </div>
         </div>
