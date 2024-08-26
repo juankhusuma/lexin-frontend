@@ -18,6 +18,7 @@ const config: Config = {
         "offwhite" : "#F9F9F9",
         "light-gray" : "#E8EAEE",
         "light-blue" : "#E8EEFD",
+        "dark-red" : "#A51017"
       }
     },
   },

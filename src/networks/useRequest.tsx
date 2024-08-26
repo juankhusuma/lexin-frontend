@@ -29,7 +29,7 @@ export default function useRequest<T>(endpoint : EndpointObject) : {
                 method: endpoint.options?.method,
                 headers: {
                     'Authorization': endpoint.options?.requireAuth && getCookie('access_token')
-                        ? `${getCookie('access_token')}`
+                        ? `${getCookie('access_token')?.valueOf()}`
                         : '',
                     'Content-Type': 'application/json',
                 },
