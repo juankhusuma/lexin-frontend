@@ -1,7 +1,7 @@
 interface ButtonProps {
     label: string
-    onClick: () => void
     type: "button" | "reset" | "submit"
+    onClick?: () => void
     className?: string
     disabled?: boolean
     loading?: boolean

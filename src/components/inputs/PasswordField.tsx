@@ -12,7 +12,7 @@ export default function LexinFormPasswordField({label, controlValue, controlOnCh
                     placeholder={placeholderString}
                     value={controlValue}
                     onChange={e => controlOnChange(e.target.value)}
-                    className={"px-1 py-2 rounded-xl text-sm border-[1px] border-gray border-solid w-full"}
+                    className={"p-2 rounded-xl text-sm border-[1px] border-gray border-solid w-full"}
                 />
             </div>
         </div>

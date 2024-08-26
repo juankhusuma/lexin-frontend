@@ -10,7 +10,7 @@ export default function PrimaryButton({label, onClick = () => {}, type = "button
             onClick={onClick}
             disabled={disabled}
         >
-            {loading && <Loader color="red"/>}{' '}{label}
+            {loading && <Loader size="xl" color="red"/>}{' '}{label}
         </button>
     )
 }
