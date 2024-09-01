@@ -18,7 +18,14 @@ const config: Config = {
         "offwhite" : "#F9F9F9",
         "light-gray" : "#E8EAEE",
         "light-blue" : "#E8EEFD",
-        "dark-red" : "#A51017"
+        "dark-red" : "#A51017",
+        "pale-orange" : "#F98B60",
+        "pale-yellow" : "#FFA800",
+        "pale-green-100": "#E7FDE8",
+        "pale-green-400": "#55A98A",
+        "pale-green-600": "#2F513D",
+        "green-500": "#07620C",
+        "green-100": "#E7FDE8"
       }
     },
   },
