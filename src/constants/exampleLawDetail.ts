@@ -30,7 +30,7 @@ const EXAMPLE_LAW_DETAIL : LawDetailType = {
         },
         {
             "type" : "header",
-            "content" : "ASAS DAN TUJUAN"
+            "content" : "LATAR BELAKANG"
         },
         {
             "type" : "subheader",
