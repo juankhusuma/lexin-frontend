@@ -3,6 +3,7 @@ import { LawStatusBadge } from "../law-status-badges"
 import formatDate from "@/app/utils/formatDate"
 
 interface SearchResultCardProps {
+    id: number,
     title: string,
     subtitle: string,
     description: string,
@@ -11,11 +12,11 @@ interface SearchResultCardProps {
     type: string,
     status?: "no-change" | "changed" | "no-effect"
 }
-export default function SearchResultCard({title, subtitle, description, releaseDate, enactedDate, type, status}: SearchResultCardProps) {
+export default function SearchResultCard({id, title, subtitle, description, releaseDate, enactedDate, type, status}: SearchResultCardProps) {
     
     return (
         <div className="my-7 mx-3">
-            <a href="" className="text-lg text-dark-navy-blue font-bold">
+            <a href={`/law-details/${id}`} className="text-lg text-dark-navy-blue font-bold">
                 {title}
             </a>
             <h3 className="">

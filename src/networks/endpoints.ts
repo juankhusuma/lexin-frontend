@@ -14,7 +14,7 @@ const AUTH_ENDPOINTS = {
 
 const LAW_DOCUMENT_ENDPOINTS = {
     GET: {
-        getLawDocumentByIdEndpoint: (lawId : any) => createEndpoint(`/api/v1/law-document/${lawId}`),
+        getLawDocumentById: (lawId : any) => createEndpoint(`/api/v1/law-document/${lawId}`),
     }
 }
 

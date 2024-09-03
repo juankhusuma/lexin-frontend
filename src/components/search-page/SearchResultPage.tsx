@@ -7,8 +7,6 @@ interface SearchResultPageProps {
 }
 export default function SearchResultPage({searchQuery} : SearchResultPageProps) {
 
-    
-
     useEffect(() => {
         console.log(searchQuery)
     }, [searchQuery])

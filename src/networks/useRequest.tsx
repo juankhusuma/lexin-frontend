@@ -25,7 +25,7 @@ export default function useRequest<T>(endpoint : EndpointObject) : {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch(endpoint.url, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL}${endpoint.url}`, {
                 method: endpoint.options?.method,
                 headers: {
                     'Authorization': endpoint.options?.requireAuth && getCookie('access_token')
