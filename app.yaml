@@ -1,0 +1,8 @@
+runtime: nodejs18
+
+service: lexin-frontend
+
+handlers:
+  - url: /.*
+    secure: always
+    script: auto

@@ -3,6 +3,8 @@
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import LexinThemeProvider from "./utils/theme";
+import { Suspense } from "react";
+import Loading from "@/components/layout/Loading";
 
 export default function RootLayout({
   children,
@@ -13,11 +15,13 @@ export default function RootLayout({
     <html lang="en">
         <body>
           <Navbar />
-          <LexinThemeProvider>
-            <main className="bg-offwhite min-h-screen pt-24">
-              {children}
-            </main>
-          </LexinThemeProvider>
+          <Suspense fallback={<Loading />}>
+            <LexinThemeProvider>
+              <main className="bg-offwhite min-h-[calc(100vh-96px)] pt-24">
+                {children}
+              </main>
+            </LexinThemeProvider>
+          </Suspense>
         </body>
     </html>
   );

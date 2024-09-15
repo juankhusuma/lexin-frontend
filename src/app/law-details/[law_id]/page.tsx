@@ -26,7 +26,7 @@ export default function LawDetailPage() {
     }, [searchParams])
 
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row h-full">
             <Sidebar tab={activeTab} setTab={setActiveTab} lawId={law_id as string} />
             <div className="w-4/5">
                 {activeTab === 'details' && <LawDetailsContent lawId={law_id as string} />}
