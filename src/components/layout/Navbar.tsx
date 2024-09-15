@@ -17,7 +17,7 @@ export default function Navbar() {
     }, [router])
 
     return (
-      <nav className="w-screen bg-dark-navy-blue h-16 fixed z-100">
+      <nav className="w-screen bg-dark-navy-blue h-16 fixed z-50">
         <div>
 
         </div>
