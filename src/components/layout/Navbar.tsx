@@ -1,25 +1,49 @@
 "use client"
-
-import Image from "next/image"
-import { useState, MouseEvent, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import Link from "next/link";
+import { TextInput } from "@mantine/core";
 
 export default function Navbar() {
 
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
 
-    // const pages = ['Sumber', 'Layanan Tersedia', 'Kontak Kami'];
-    // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+    const inSearchPage = pathname === '/search'
+    const queryExists = (searchParams.get('q') !== null)
+    const inSearchResultPage = inSearchPage && queryExists
+    const [isLoggedIn, _setIsLoggedIn] = useState<boolean>(false)
+    const [loggedInAs, _setLoggedInAs] = useState<string>("")
+    const [search, setSearch] = useState<string>(searchParams.get('q') as string)
 
-
-    useEffect(() => {
-
-    }, [router])
+    function onSubmitSearchForm() {
+      router.push(`/search?q=${encodeURIComponent(search)}`)
+    }
 
     return (
       <nav className="w-screen bg-dark-navy-blue h-16 fixed z-50">
-        <div>
-
+        <div className={`flex flex-row ${inSearchResultPage ? "justify-between" : "justify-end"} items-center h-full px-16`}>
+          {inSearchResultPage && 
+          <div>
+          </div>
+          }
+          {inSearchResultPage && 
+            <form onSubmit={onSubmitSearchForm}>
+              <input 
+                className="w-[600px] p-2 rounded-xl" 
+                value={search} 
+                onChange={(event) => setSearch(event.currentTarget.value)}
+              />
+            </form>
+          }
+          <Link href="/login" className="flex flex-row items-center"> 
+            <Icon icon="mdi:account-circle" style={{fontSize: '40px', color: 'white'}} />
+            <div className="text-white font-semibold ml-2">
+              {isLoggedIn ? `Logged in as "${loggedInAs}"` : "Login"}
+            </div>
+          </Link>
         </div>
       </nav>
     )

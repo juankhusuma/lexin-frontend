@@ -14,14 +14,14 @@ export default function RootLayout({
   return (
     <html lang="en">
         <body>
-          <Navbar />
-          <Suspense fallback={<Loading />}>
-            <LexinThemeProvider>
+          <LexinThemeProvider>
+            <Suspense fallback={<Loading />}>
+              <Navbar />
               <main className="bg-offwhite min-h-[calc(100vh-96px)] pt-24">
                 {children}
               </main>
-            </LexinThemeProvider>
-          </Suspense>
+            </Suspense>
+          </LexinThemeProvider>
         </body>
     </html>
   );
