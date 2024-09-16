@@ -11,11 +11,10 @@ export default function LandingPage() {
     <div className="px-10 flex flex-row items-center justify-center h-full">
       <div className="mt-32 w-1/2">
         <h4 className="font-bold text-4xl">
-          Legal Generative-AI Search
+          Lexin: Kecerdasan Hukum dengan Generative AI Terdepan
         </h4>
         <p className="mt-5">
-          Unlock unparalleled legal insights with Legal Generative-AI Search, where cutting-edge artificial intelligence 
-          meets exhaustive legal databases to revolutionize your research experience.
+          Buka wawasan hukum yang tak tertandingi dengan basis data hukum berbasis Generative-AI Search, di mana kecerdasan buatan modern bertemu dengan basis data hukum yang lengkap untuk merevolusi pengalaman riset hukum Anda.
         </p>
         <PrimaryButton 
           label="Coba sekarang" 
