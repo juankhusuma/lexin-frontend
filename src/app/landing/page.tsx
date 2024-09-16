@@ -4,6 +4,7 @@ import PrimaryButton from '@/components/button/PrimaryButton';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+
 export default function LandingPage() {
   const router = useRouter()
 
@@ -26,7 +27,6 @@ export default function LandingPage() {
       <div className="mt-32 flex items-center justify-center w-1/2">
         <Image src="/hero-landing-page.png" alt="" width={750} height={550}/>
       </div>
-
     </div>
   );
 }
