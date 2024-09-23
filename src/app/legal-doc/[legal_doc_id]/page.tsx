@@ -11,11 +11,14 @@ import { LawDetailMetadataType, LawDetailType } from "@/types/LawDetailType"
 import EXAMPLE_LAW_DETAIL from "@/constants/exampleLawDetail"
 import LawConsolidationContent from "@/components/law-details/LawConsolidationContent"
 import LawBasisContent from "@/components/law-details/LawBasisContent"
+import useRequest from "@/networks/useRequest"
+import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
 
 export default function LawDetailPage() {
-    const { law_id } = useParams()
+    const { legal_doc_id } = useParams()
     const searchParams = useSearchParams()
     const [activeTab, setActiveTab] = useState<SidebarMenuType>('details')
+    const { data } = useRequest<any>(LEGAL_DOCUMENT_ENDPOINTS.GET.getLawDocumentById(legal_doc_id))
 
     useEffect(() => {
         if (searchParams.get('tab') === 'details') {
@@ -31,14 +34,19 @@ export default function LawDetailPage() {
         }
     }, [searchParams])
 
+    useEffect(() => {
+        console.log("test data")
+        console.log(data)
+    }, [data])
+
     const [lawDetails, _setLawDetails] = useState<LawDetailType | undefined>(EXAMPLE_LAW_DETAIL) 
 
     return (
         <div className="flex flex-row">
-            <Sidebar tab={activeTab} setTab={setActiveTab} lawId={law_id as string} />
+            <Sidebar tab={activeTab} setTab={setActiveTab} lawId={legal_doc_id as string} />
             <div className="w-4/5 flex flex-col">
                 <LawContentHeader activeTab={activeTab} metadata={lawDetails?.metadata as LawDetailMetadataType}/>
-                {activeTab === 'details' && <LawDetailsContent lawId={law_id as string} />}
+                {activeTab === 'details' && <LawDetailsContent lawId={legal_doc_id as string} />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
                 {activeTab === 'history' && <LawHistoryContent />}
                 {activeTab === 'law-basis' && <LawBasisContent />}

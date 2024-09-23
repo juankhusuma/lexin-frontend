@@ -17,7 +17,7 @@ export default function RootLayout({
           <LexinThemeProvider>
             <Suspense fallback={<Loading />}>
               <Navbar />
-              <main className="bg-offwhite min-h-[calc(100vh-96px)] pt-24">
+              <main className="bg-offwhite min-h-[calc(100vh-64px)] pt-24">
                 {children}
               </main>
             </Suspense>

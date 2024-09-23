@@ -16,7 +16,7 @@ export default function SearchResultCard({id, title, subtitle, description, rele
     
     return (
         <div className="my-7 mx-3">
-            <a href={`/law-details/${id}`} className="text-lg text-dark-navy-blue font-bold">
+            <a href={`/legal-doc/${id}`} className="text-lg text-dark-navy-blue font-bold">
                 {title}
             </a>
             <h3 className="">

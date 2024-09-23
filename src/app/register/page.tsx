@@ -5,6 +5,7 @@ import LexinFormPasswordField from "@/components/inputs/PasswordField";
 import LexinFormTextField from "@/components/inputs/TextField";
 import { useState } from "react";
 
+
 export default function LoginPage() {
 
     const [nameInput, changeNameInput] = useState<string>("")
@@ -13,9 +14,12 @@ export default function LoginPage() {
 
 
     function onLoginFormSubmit() {
-        console.log(`Registering with email: ${emailInput}`)
-        console.log(`Registering with name: ${nameInput}`)
-        console.log(`Registering with password: ${passwordInput}`)
+        const reqBody = {
+            email: emailInput,
+            fullname: nameInput,
+            password: passwordInput
+        }
+
     }
 
     return (
