@@ -3,7 +3,7 @@ import { LawStatusBadge } from "../law-status-badges"
 import formatDate from "@/app/utils/formatDate"
 
 interface SearchResultCardProps {
-    id: number,
+    id: string,
     title: string,
     subtitle: string,
     description: string,

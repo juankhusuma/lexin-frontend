@@ -15,10 +15,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      - name: Set environment variables from secrets
-        run: echo "NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL }}" >> $GITHUB_ENV
-
+        
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v2
         with:
@@ -38,6 +35,11 @@ jobs:
         with:
           credentials_json: "${{ secrets.GCP_SA_KEY }}"
           project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Set up Environment Variables to app.yaml
+        uses: 73h/gae-app-yaml-replace-env-variables@v0.3
+        env:
+          NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL }}
 
       - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"

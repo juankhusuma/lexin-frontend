@@ -1,23 +1,27 @@
 import EXAMPLE_SEARCH_RESULTS from "@/constants/exampleSearchResults"
 import SearchResultCard from "./SearchResultCard"
 import ResultCount from "./ResultCount"
+import { SearchResult } from "@/networks/response-type/SearchResultResponseType"
 
-export default function DatabaseSearchResultSection() {
+interface DatabaseSearchResultSectionProps {
+    searchResults?: SearchResult[]
+}
+export default function DatabaseSearchResultSection({ searchResults = [] } : DatabaseSearchResultSectionProps) {
 
     const COUNT_RESULT = 10
     return (
         <div className="flex flex-col">
             <ResultCount count={COUNT_RESULT} />
-            {EXAMPLE_SEARCH_RESULTS.map(result => (
+            {searchResults.map(result => (
                 <SearchResultCard 
-                    key={result.id}
-                    id={result.id}
-                    title={result.title}
-                    subtitle={result.subtitle}
-                    description={result.description}
-                    releaseDate={result.release_date}
-                    enactedDate={result.enacted_date}
-                    type={result.type}
+                    key={result._id}
+                    id={result._id}
+                    title={result._source.title}
+                    subtitle={result._source.tentang}
+                    description={result._source.pemrakarsa}
+                    releaseDate={new Date(result._source.ditetapkan_tanggal)}
+                    enactedDate={new Date(result._source.ditetapkan_tanggal)}
+                    type={result._source.status}
                 />
             ))}
         </div>
