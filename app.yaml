@@ -6,3 +6,6 @@ handlers:
   - url: /.*
     secure: always
     script: auto
+
+env_variables:
+  NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: $NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL 
