@@ -5,9 +5,13 @@ interface ContentNodeProps {
 }
 export default function ContentNode({node} : ContentNodeProps) {
     const isExplanation : boolean = node.type === "explanation"
-    const isCentered : boolean = node.type === "title" || node.type === "header" || node.type === "subheader"
+    const isCentered = true
+    // const isCentered : boolean = node.type === "title" || node.type === "header" || node.type === "subheader"
     const isBold : boolean = node.type === "title" || node.type === "header"
     const isSemibold: boolean = node.type === "subheader"
+
+    // Replace all newline characters with <br />
+    const formattedContent = node.content.replace(/\n/g, '<br />')
 
     return (
         isExplanation 
@@ -15,8 +19,8 @@ export default function ContentNode({node} : ContentNodeProps) {
         <></>
         : 
         <div 
-            className={`my-1 ${isCentered && "self-center"} ${isBold && "font-bold"} ${isSemibold && "font-semibold"}`} 
-            dangerouslySetInnerHTML={{__html: node.content}} 
+            className={`my-1 ${isCentered && "text-center"} ${isBold && "font-bold"} ${isSemibold && "font-semibold"}`} 
+            dangerouslySetInnerHTML={{__html: formattedContent}} 
         />
     )
 }

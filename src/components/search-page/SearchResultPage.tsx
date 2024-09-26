@@ -9,7 +9,7 @@ interface SearchResultPageProps {
     searchQuery: string
 }
 export default function SearchResultPage({searchQuery} : SearchResultPageProps) {
-    const { data } = useRequest<SearchResultResponseType>(LEGAL_DOCUMENT_ENDPOINTS.GET.searchLegalDocument(searchQuery as string))
+    const { data, loading } = useRequest<SearchResultResponseType>(LEGAL_DOCUMENT_ENDPOINTS.GET.searchLegalDocument(searchQuery as string))
 
     useEffect(() => {
         if (data) {
@@ -21,7 +21,7 @@ export default function SearchResultPage({searchQuery} : SearchResultPageProps) 
     return (
         <div>
             <AIAnswerSection />
-            <DatabaseSearchResultSection searchResults={data?.hits ?? []} />
+            <DatabaseSearchResultSection loading={loading} searchResults={data?.hits ?? []} />
         </div>
     )    
 }

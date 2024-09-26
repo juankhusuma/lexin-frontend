@@ -10,7 +10,7 @@ export default function useRequest<T>(endpoint : EndpointObject) : {
     fetchCallback : () => Promise<void>
 } {
     const [data, setData] = useState<T | undefined>()
-    const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
     
     function isMethodAllowsBody() {

@@ -13,12 +13,13 @@ import LawConsolidationContent from "@/components/law-details/LawConsolidationCo
 import LawBasisContent from "@/components/law-details/LawBasisContent"
 import useRequest from "@/networks/useRequest"
 import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
+import { DocumentFullDetailType } from "@/networks/response-type/DocumentFullDetailResponse"
 
 export default function LawDetailPage() {
     const { legal_doc_id } = useParams()
     const searchParams = useSearchParams()
     const [activeTab, setActiveTab] = useState<SidebarMenuType>('details')
-    const { data } = useRequest<any>(LEGAL_DOCUMENT_ENDPOINTS.GET.getLawDocumentById(legal_doc_id))
+    const { data } = useRequest<DocumentFullDetailType>(LEGAL_DOCUMENT_ENDPOINTS.GET.getLawDocumentById(legal_doc_id))
 
     useEffect(() => {
         if (searchParams.get('tab') === 'details') {
@@ -39,14 +40,17 @@ export default function LawDetailPage() {
         console.log(data)
     }, [data])
 
-    const [lawDetails, _setLawDetails] = useState<LawDetailType | undefined>(EXAMPLE_LAW_DETAIL) 
-
     return (
         <div className="flex flex-row">
             <Sidebar tab={activeTab} setTab={setActiveTab} lawId={legal_doc_id as string} />
             <div className="w-4/5 flex flex-col">
-                <LawContentHeader activeTab={activeTab} metadata={lawDetails?.metadata as LawDetailMetadataType}/>
-                {activeTab === 'details' && <LawDetailsContent lawId={legal_doc_id as string} />}
+                <LawContentHeader activeTab={activeTab} metadata={{
+                    title: data?._source.title ?? '',
+                    subtitle: data?._source.tentang ?? '',
+                    enacted_date: data?._source.ditetapkan_tanggal ?? '',
+                    change_status: 'no-change'
+                }}/>
+                {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content}] : []} />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
                 {activeTab === 'history' && <LawHistoryContent />}
                 {activeTab === 'law-basis' && <LawBasisContent />}

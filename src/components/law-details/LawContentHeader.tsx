@@ -1,5 +1,4 @@
 import { LawDetailMetadataType } from "@/types/LawDetailType"
-import formatDate from "@/utils/formatDate"
 import { ChangedBadge, NoChangesBadge, NoEffectBadge } from "../law-status-badges"
 
 interface LawContentHeaderProps {
@@ -9,10 +8,10 @@ interface LawContentHeaderProps {
 export default function LawContentHeader({activeTab, metadata} : LawContentHeaderProps) {
     return (
         <div className="h-fit w-full bg-light-blue -mt-8 flex flex-col items-center pt-4 pb-10 z-20">
-            <span className="font-bold text-xl">
+            <span className="font-bold text-xl text-center">
                 {metadata.title}
             </span>
-            <span className="font-semibold text-lg mt-2">
+            <span className="font-semibold text-lg mt-2 text-center">
                 {activeTab === "history" ?
                 <p>
                     Perubahan atas <span className="underline">{metadata.title}</span>{' '}{metadata.subtitle}
@@ -33,13 +32,7 @@ export default function LawContentHeader({activeTab, metadata} : LawContentHeade
                     Ditetapkan: 
                 </span>
                 <span className="font-bold text-dark-navy-blue">
-                    {formatDate(metadata.enacted_date)}
-                </span>
-                <span className="ml-5 mr-1">
-                    Berlaku: 
-                </span>
-                <span className="font-bold text-dark-navy-blue">
-                    {formatDate(metadata.enacted_date)}
+                    {metadata.enacted_date ?? "-"}
                 </span>
             </div>
         </div>
