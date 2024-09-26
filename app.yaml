@@ -8,4 +8,4 @@ handlers:
     script: auto
 
 env_variables:
-  NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: https://backend-dot-lexin-ta.et.r.appspot.com 
+  NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: $NEXT_PUBLIC_BACKEND_SERVICE_
