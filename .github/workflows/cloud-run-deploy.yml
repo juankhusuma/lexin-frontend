@@ -1,0 +1,52 @@
+name: Deploy to Cloud Run (staging)
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Google Cloud SDK
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}  # Set your Google Cloud project ID as a secret
+          service_account_key: ${{ secrets.GCP_SA_KEY }}  # Set your Google Cloud service account key as a secret
+          export_default_credentials: true
+
+      # Authenticate Docker to push to Google Container Registry (GCR)
+      - name: Authenticate Docker with GCR
+        run: |
+          echo ${GOOGLE_APPLICATION_CREDENTIALS} | docker login -u _json_key --password-stdin https://gcr.io
+
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/lexin-frontend:$GITHUB_SHA .
+
+      # Push the Docker image to GCR
+      - name: Push Docker image to GCR
+        run: |
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lexin-frontend:$GITHUB_SHA
+
+      # Deploy to Cloud Run with environment variable from GitHub secret
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy lexin-frontend \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/lexin-frontend:$GITHUB_SHA \
+          --region us-central1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --set-env-vars NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL }}
