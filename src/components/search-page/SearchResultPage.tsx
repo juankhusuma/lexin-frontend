@@ -21,7 +21,7 @@ export default function SearchResultPage({searchQuery} : SearchResultPageProps) 
     return (
         <div>
             <AIAnswerSection />
-            <DatabaseSearchResultSection searchResults={data ?? []} />
+            <DatabaseSearchResultSection searchResults={data?.hits ?? []} />
         </div>
     )    
 }

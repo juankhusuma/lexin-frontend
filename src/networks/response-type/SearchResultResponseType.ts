@@ -17,6 +17,12 @@ export interface SearchResult {
     _source: SourceType
 }
 
-type SearchResultResponseType = SearchResult[]
+export interface SearchResultResponseType {
+    page: number
+    size: number
+    total_hits: number
+    total_pages: number
+    hits: SearchResult[]
+}
 
 export default SearchResultResponseType

@@ -16,6 +16,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
+      - name: Set up Environment Variables to app yaml
+        uses: 73h/gae-app-yaml-replace-env-variables@v0.3
+        with:
+          app_yaml_path: "app.yaml"
+        env:
+          NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL }}
+
       - name: Setup Node.js and pnpm
         uses: actions/setup-node@v2
         with:
@@ -36,12 +43,6 @@ jobs:
           credentials_json: "${{ secrets.GCP_SA_KEY }}"
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Set up Environment Variables to app yaml
-        uses: 73h/gae-app-yaml-replace-env-variables@v0.3
-        env:
-          NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL }}
-        with:
-          app_yaml_path: "app.yaml"
 
       - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"

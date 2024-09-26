@@ -12,7 +12,7 @@ export default function DatabaseSearchResultSection({ searchResults = [] } : Dat
     return (
         <div className="flex flex-col">
             <ResultCount count={COUNT_RESULT} />
-            {searchResults.map(result => (
+            {(searchResults ?? []).map(result => (
                 <SearchResultCard 
                     key={result._id}
                     id={result._id}
