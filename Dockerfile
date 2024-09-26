@@ -2,8 +2,7 @@
 FROM node:18-alpine
 
 # Set environment variables
-ENV NODE_ENV=development
-ENV NEXT_PUBLIC_GATEWAY_API_BASE_URL=http://localhost:8000
+ENV NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
 
 # Create and set the working directory
 WORKDIR /app
@@ -21,8 +20,11 @@ COPY . .
 # Install dependencies
 RUN pnpm install
 
+# Build project
+RUN pnpm build
+
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Start the Next.js application
-CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "start"]
