@@ -19,8 +19,7 @@ export default function DatabaseSearchResultSection({ searchResults = [] } : Dat
                     title={result._source.title}
                     subtitle={result._source.tentang}
                     description={result._source.pemrakarsa}
-                    releaseDate={new Date(result._source.ditetapkan_tanggal)}
-                    enactedDate={new Date(result._source.ditetapkan_tanggal)}
+                    releaseDate={result._source.ditetapkan_tanggal}
                     type={result._source.status}
                 />
             ))}

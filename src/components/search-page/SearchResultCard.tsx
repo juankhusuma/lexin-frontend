@@ -7,12 +7,11 @@ interface SearchResultCardProps {
     title: string,
     subtitle: string,
     description: string,
-    releaseDate: Date,
-    enactedDate: Date,
+    releaseDate: string
     type: string,
     status?: "no-change" | "changed" | "no-effect"
 }
-export default function SearchResultCard({id, title, subtitle, description, releaseDate, enactedDate, type, status}: SearchResultCardProps) {
+export default function SearchResultCard({id, title, subtitle, description, releaseDate, type, status}: SearchResultCardProps) {
     
     return (
         <div className="my-7 mx-3">
@@ -33,18 +32,9 @@ export default function SearchResultCard({id, title, subtitle, description, rele
                         Ditetapkan:
                     </div>
                     <div className="ml-1 text-dark-navy-blue font-semibold">
-                        {formatDate(releaseDate)}
+                        {releaseDate}
                     </div>
                 </div>
-                <div className="flex flex-row">
-                    <div>
-                        Diberlakukan:
-                    </div>
-                    <div className="ml-2 text-dark-navy-blue font-semibold">
-                        {formatDate(enactedDate)}
-                    </div>
-                </div>
-                
             </div>
         </div>
     )
