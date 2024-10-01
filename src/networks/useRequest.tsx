@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { EndpointObject } from "./endpoint-base";
 import { getCookie } from "cookies-next";
 
+interface UseRequestOptions<T> {
+    onSuccess?: (data: T) => void
+    onError?: () => void
+    body?: {[a: string]: any}
+}
 
-export default function useRequest<T>(endpoint : EndpointObject) : {
+export default function useRequest<T>(endpoint : EndpointObject, options?: UseRequestOptions<T>) : {
     data : T | undefined, 
     loading : boolean, 
     error : boolean,
-    fetchCallback : () => Promise<void>
+    fetchCallback : () => Promise<T | undefined>
 } {
     const [data, setData] = useState<T | undefined>()
     const [loading, setLoading] = useState<boolean>(false)
@@ -33,16 +38,21 @@ export default function useRequest<T>(endpoint : EndpointObject) : {
                         : '',
                     'Content-Type': 'application/json',
                 },
-                body: (isMethodAllowsBody() && endpoint.options?.body) ? JSON.stringify(endpoint.options.body) : undefined,
+                body: (isMethodAllowsBody() && options?.body) ? JSON.stringify(options.body) : undefined,
             })
             if (res.ok) {
                 const asyncRes = res.json() as Promise<T>
                 const data = await asyncRes
                 setData(data)
+                options?.onSuccess && options.onSuccess(data)
+                return data
+            } else {
+                throw new Error(`Failed to make a request to ${endpoint.url}`)
             }
         } catch (err) {
             console.error("use request error: ", err)
             setError(true)
+            options?.onError && options.onError()
         } finally {
             setLoading(false)
         }

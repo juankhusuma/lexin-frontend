@@ -5,13 +5,19 @@ const AUTH_ENDPOINTS = {
         checkToken: createEndpoint(`/api/v1/user/me`, { requireAuth: true }),
     },
     POST: {
-        login: (username: string, password: string) => createEndpoint(
+        login:  createEndpoint(
             `/api/v1/user/token`, 
-            { method:'POST', body: { username, password } },
+            { 
+                method: 'POST', 
+                autoFetch: false 
+            },
         ),
-        register: (email: string, fullname: string, password: string) => createEndpoint(
+        register:  createEndpoint(
             `/api/v1/user/register`,
-            { method: 'POST', body: {email, fullname, password}}
+            { 
+                method: 'POST', 
+                autoFetch: false 
+            }
         ),
     }
 }
