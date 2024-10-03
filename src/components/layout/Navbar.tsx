@@ -54,10 +54,23 @@ export default function Navbar() {
               />
             </form>
           }
-          <Link href="/login" className="flex flex-row items-center"> 
+          <Link href={loggedInAs ? "/logout" : "/login"} className="flex flex-row items-center"> 
             <Icon icon="mdi:account-circle" style={{fontSize: '40px', color: 'white'}} />
             <div className="text-white font-semibold ml-2">
-              {loggedInAs ? `Logged in as "${loggedInAs.fullname}"` : "Login"}
+              {
+                loggedInAs 
+                ?
+                  <div className="flex flex-col items-start">
+                    <p>
+                      {`Logged in as "${loggedInAs.fullname}"`} 
+                    </p>
+                    <p className="text-xs">
+                      Click here to logout
+                    </p>
+                  </div> 
+                : 
+                  <p>Login</p>
+              }
             </div>
           </Link>
         </div>
