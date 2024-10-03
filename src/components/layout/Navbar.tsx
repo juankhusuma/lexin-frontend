@@ -4,6 +4,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import LexinLogo from "./LexinLogo";
+import { getCookie } from "cookies-next";
+import UserDataResponseType from "@/networks/response-type/UserDataResponseType";
 
 export default function Navbar() {
     // Hooks
@@ -18,10 +20,15 @@ export default function Navbar() {
     const showLexinLogo = inSearchResultPage || pathname.startsWith('/law-details') 
 
     // States
-    const [isLoggedIn, _setIsLoggedIn] = useState<boolean>(false)
-    const [loggedInAs, _setLoggedInAs] = useState<string>("")
+    const [loggedInAs, setLoggedInAs] = useState<UserDataResponseType | null>(null)
     const [search, setSearch] = useState<string>(searchParams.get('q') as string)
-
+    
+    // User Data
+    useEffect(() => {
+      const fromCookie = getCookie('user_data')
+      const userData = fromCookie ? JSON.parse(fromCookie) as UserDataResponseType : null
+      setLoggedInAs(userData)
+    }, [pathname])
     
     function onSubmitSearchForm() {
       router.push(`/search?q=${encodeURIComponent(search)}`)
@@ -50,7 +57,7 @@ export default function Navbar() {
           <Link href="/login" className="flex flex-row items-center"> 
             <Icon icon="mdi:account-circle" style={{fontSize: '40px', color: 'white'}} />
             <div className="text-white font-semibold ml-2">
-              {isLoggedIn ? `Logged in as "${loggedInAs}"` : "Login"}
+              {loggedInAs ? `Logged in as "${loggedInAs.fullname}"` : "Login"}
             </div>
           </Link>
         </div>

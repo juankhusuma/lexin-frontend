@@ -6,6 +6,7 @@ interface UseRequestOptions<T> {
     onSuccess?: (data: T) => void
     onError?: () => void
     body?: {[a: string]: any}
+    contentType?: 'application/json' | 'application/x-www-form-urlencoded'
 }
 
 export default function useRequest<T>(endpoint : EndpointObject, options?: UseRequestOptions<T>) : {
@@ -17,7 +18,10 @@ export default function useRequest<T>(endpoint : EndpointObject, options?: UseRe
     const [data, setData] = useState<T | undefined>()
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
-    
+
+    const getContentType = options?.contentType ?? 'application/json'
+    const getBody = (getContentType === 'application/json') ? JSON.stringify(options?.body ?? {}) : new URLSearchParams(options?.body ?? {})
+
     function isMethodAllowsBody() {
         return (
             endpoint.options?.method === "POST" || 
@@ -36,9 +40,9 @@ export default function useRequest<T>(endpoint : EndpointObject, options?: UseRe
                     'Authorization': endpoint.options?.requireAuth && getCookie('access_token')
                         ? `${getCookie('access_token')?.valueOf()}`
                         : '',
-                    'Content-Type': 'application/json',
+                    'Content-Type': getContentType,
                 },
-                body: (isMethodAllowsBody() && options?.body) ? JSON.stringify(options.body) : undefined,
+                body: (isMethodAllowsBody() && options?.body) ? getBody : null,
             })
             if (res.ok) {
                 const asyncRes = res.json() as Promise<T>

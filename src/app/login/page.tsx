@@ -22,13 +22,13 @@ export default function LoginPage() {
             body: {
                 username: emailInput, 
                 password: passwordInput,
-                grant_type: 'password'
             },
             onSuccess(data) {
-                setCookie('access_token', data.access_token)
-                setCookie('refresh_token', data.refresh_token)
+                setCookie('access_token', `${data.token_type} ${data.access_token}`)
+                setCookie('refresh_token', `${data.token_type} ${data.refresh_token}`)
                 router.push('/search')
             },
+            contentType: 'application/x-www-form-urlencoded'
         }
     )
 
