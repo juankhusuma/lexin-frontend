@@ -20,7 +20,7 @@ export default function TrendingSearchSection() {
     return (
         <div className="mx-36 mt-5">
             <h1 className="font-semibold mb-3">
-                Trending searches:
+                Saran pencarian:
             </h1>
             <div className="grid grid-cols-2 gap-x-14 gap-y-5">
                 {data?.map(d => <TrendingCard label={d.value} />)}

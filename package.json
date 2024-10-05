@@ -1,4 +1,8 @@
 {
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=7"
+  },
   "name": "lexin-frontend",
   "version": "0.1.0",
   "private": true,

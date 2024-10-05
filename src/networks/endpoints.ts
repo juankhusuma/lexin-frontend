@@ -2,20 +2,37 @@ import { createEndpoint } from "./endpoint-base";
 
 const AUTH_ENDPOINTS = {
     GET: {
-        checkToken: createEndpoint(`/api/v1/auth`, { method: 'GET', requireAuth: true }),
+        checkToken: createEndpoint(`/api/v1/user/me`, { requireAuth: true }),
     },
     POST: {
-        login: (username: string, password: string) => createEndpoint(
-            `/api/v1/auth/token`, 
-            { method:'POST', body: { username, password } }
-        )
+        login:  createEndpoint(
+            `/api/v1/user/token`, 
+            { 
+                method: 'POST', 
+                autoFetch: false 
+            },
+        ),
+        register:  createEndpoint(
+            `/api/v1/user/register`,
+            { 
+                method: 'POST', 
+                autoFetch: false 
+            }
+        ),
     }
 }
 
-const LAW_DOCUMENT_ENDPOINTS = {
+const LEGAL_DOCUMENT_ENDPOINTS = {
     GET: {
-        getLawDocumentById: (lawId : any) => createEndpoint(`/api/v1/law-document/${lawId}`),
+        getLawDocumentById: (lawId : any) => createEndpoint(`/api/v1/legal-document/detail-full/${lawId}`),
+        searchLegalDocument: (query : string) => createEndpoint(`/api/v1/legal-document/search?query=${encodeURIComponent(query)}`)
     }
 }
 
-export default { AUTH_ENDPOINTS, LAW_DOCUMENT_ENDPOINTS } 
+const MISC_ENDPOINTS = {
+    GET: {
+        healthCheck: createEndpoint(`/api/v1/health-check`)
+    }
+}
+
+export { AUTH_ENDPOINTS, LEGAL_DOCUMENT_ENDPOINTS, MISC_ENDPOINTS } 

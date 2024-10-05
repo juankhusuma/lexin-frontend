@@ -5,6 +5,7 @@ interface ButtonProps {
     className?: string
     disabled?: boolean
     loading?: boolean
+    fullWidth?: boolean
 }
 
 export default ButtonProps

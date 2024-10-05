@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lexin-ta",
+  "private_key_id": "e4b218d913ff703a827c10e6eb55d6d81bb849de",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCdWE3SPIB0O92t\nuQ1FoFQnRFqMf+0N9Kt3hvN6VOrI3O/+OzioM8v0iIot35huc9BupK/QyrcTqFN6\n/PYzkuQDaNhBhvWHKDr9sDowXJpDEVZFcfiKHP1OkhCuxdiGsfsmmD+z942MYZe+\n5RcVpIJtYyu8ClxhWvbdVms25xb+mzXbCkrbQ0sFAGwriZskHVgeOozf9HzulsuL\nm2ZBETjgS2FmUaBzGeJAG/02svlpRz+N6zUXkARtLl7C8lq/WZ6bLP9nJTC1ZIK2\n4HQkiS2nsNux6xDZIdYNtuUnRKk97CQqd9ayZhhmm7o4Ct7D5vPRcTP1nhWy1qhv\nYErSFBrDAgMBAAECggEARQqbUzXzE421TuZVWYjphDVtGhuEFEyY9KDFs5cRUsQH\nluG7karwwsMrBsgHJegxvGsNLqvUu45v2xamnajF3m0h/1bN49mWUP0D+3aWxfkU\nhvJkoY3o5JIZOedchHYSgzPpN/nXJZMpN71kbL278W3DogZV1O5KRoMGFpg+MceO\nvVMkiX9i9DvFgWk+AjNO867/fDu9L9AQCYSrWjWvSAWB8Szj0NtItIQwRPYLpwr0\n1YFnAWwziZ1AR7QzaWeDUoyE2bQdXGeui2vtJiLBwF0bek3Ca6si653pCJgQaTRk\nLPGC1Kf/I+ov9HBeS6eYwWfkI73/ocj6UiDVY2uvoQKBgQDXeluASrXiBrtrcPAN\nEZ4QJTANy3qJZOEN8d9HBfyS6kHTxEvVw4QYqxKnT8GrzhEFFJc2fK2CM6UYaeaj\nSfS4j3ZM14W6mxz3+Ic96W/RszoCedYjKiLTMNxnK/DvpEMFJpTCwUDmUng/DbpX\nB+/qGPXpco4eXL/aizKfY8nNkwKBgQC670dpVpdJm4dsoW+D4BTRkKL9P5+M5lgC\nysC8BqWADJ/ATEvOtkB/4f8r0fdcLapCsghrXVDDNlnjsbvhf4jNtOaorXjjOtff\nm2vJHcRoHT8T6FDsNf4kdjQ2Hm1vOFpHsfaKQmWj66hPzBUFgQiUnMf6flfNrQ7V\n+4J3m+U8EQKBgQDS5rbCZd2J4g71BTBfijvMD6nuBpfj/HHupStlp61j2pcdf4a+\nLkSPpHl4ey7TSrkL4PBz6yokQwo3UAfnEM7PCdO/OD9yurlq17z/UwkYFbUUkU2P\nU4GMdclzzeVfmMXkN7PovyAXjuaUyIn2/xTKay3eFTqW6y74579flFsDswKBgGI5\n+3dBleuKuyV8ysEsDSR1cP/L38XE//gvnAjxISPg/kyoiqkLIWdRVKktAmLAaBf1\nvvDTru108NTxfr0mK7eT2CRISx5zvB12aLPcXWkr/Qoz59nHIUz9g7/wSybHIMFN\npTPPYeM5oE6V+XHT9LNKktZwbyjXR9Vu/IZnN5RRAoGABQ44pAsNI42FMbzHFNlS\naxBs0yU8W2JjYa9urb83RhGrIZkZLzGqqnQUDY3qFPBSvL8Ldt0ry3/jJub61jaA\n8JQWdYNVc+dXRcBsIReNfqWERLwf/Y6qax9O6lpPYSzo4+oEeuhE6agmAy/Ifzy4\nmeWZUoj7BDjXMtLElfguIG4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "cloud-run-lexin@lexin-ta.iam.gserviceaccount.com",
+  "client_id": "103467754895554409260",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cloud-run-lexin%40lexin-ta.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

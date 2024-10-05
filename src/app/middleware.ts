@@ -1,3 +1,4 @@
+import UserDataResponseType from '@/networks/response-type/UserDataResponseType'
 import { NextResponse, NextRequest } from 'next/server'
 
 // const PATHS_REQUIRE_AUTH : string[] = [
@@ -6,15 +7,12 @@ import { NextResponse, NextRequest } from 'next/server'
 //   "/profile",
 // ]
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  console.log("Middleware")
-  console.log(`Requested URL: ${request.url}`)
+export async function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
 export const config = {
-  // matcher: [
-  //   '/((?!api|_next/static|_next/image|.*\\.png$).*)'
-  // ],
+  matcher: [
+    '/((?!api|_next/static|_next/image|.*\\.png$).*)'
+  ],
 }
