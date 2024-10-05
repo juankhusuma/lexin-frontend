@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  lexin-app:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Your existing Next.js Dockerfile
+    ports:
+      - "3000"  # Internal port, exposed via Nginx
+    environment:
+      NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL: https://backend-dot-lexin-ta.et.r.appspot.com
+
+  nginx:
+    image: nginx:alpine  # Use the official Nginx image
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Mount the Nginx config file
+    ports:
+      - "80:80"  # Expose port 80 for public access
+    depends_on:
+      - lexin-app  # Ensure Nginx waits for the app to start
