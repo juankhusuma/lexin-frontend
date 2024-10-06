@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # Change this to your main branch
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -45,6 +48,12 @@ jobs:
         chmod 600 id_rsa
 
         eval "$(ssh-agent -s)"
-        echo "$SSH_PASSPHRASE" | ssh-add id_rsa
         
-        sshpass -p "$VM_PASSWORD" ssh -i id_rsa -o StrictHostKeyChecking=no -J $SSH_TUNNEL_USERNAME@$SSH_TUNNEL_HOST:$SSH_TUNNEL_PORT $VM_USER@$VM_HOST "bash -s" < ~/lexin-frontend/deploy.sh
+        expect << EOF
+          spawn ssh-add id_rsa
+          expect "Enter passphrase for id_rsa:"
+          send "$SSH_PASSPHRASE\r"
+          expect eof
+        EOF
+        
+        sshpass -p "$VM_PASSWORD" ssh -i id_rsa -o StrictHostKeyChecking=no -J $SSH_TUNNEL_USERNAME@$SSH_TUNNEL_HOST:$SSH_TUNNEL_PORT $VM_USER@$VM_IP "bash -s" < ~/lexin-frontend/deploy.sh
