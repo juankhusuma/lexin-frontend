@@ -55,7 +55,7 @@ jobs:
         expect << EOF
           spawn ssh-add id_rsa
           expect "Enter passphrase for id_rsa:"
-          send "$SSH_PASSPHRASE"
+          send "$SSH_PRIVATE_KEY_PASSPHRASE"
           send "\r"
           expect eof
         EOF
