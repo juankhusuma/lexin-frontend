@@ -59,4 +59,9 @@ jobs:
           expect eof
         EOF
         
-        sshpass -p "$VM_PASSWORD" ssh -i id_rsa -o StrictHostKeyChecking=no -J $SSH_TUNNEL_USERNAME@$SSH_TUNNEL_HOST:$SSH_TUNNEL_PORT $VM_USER@$VM_IP "cd ~/lexin-frontend && bash deploy.sh"
+        sshpass -p "$VM_PASSWORD" ssh -i id_rsa \
+          -o StrictHostKeyChecking=no \
+          -o UserKnownHostsFile=/dev/null \
+          -J $SSH_TUNNEL_USERNAME@$SSH_TUNNEL_HOST:$SSH_TUNNEL_PORT \
+          $VM_USER@$VM_IP \
+          "cd ~/lexin-frontend && bash deploy.sh"
