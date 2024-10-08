@@ -61,16 +61,16 @@ export function Sidebar({tab, setTab, lawId} : SidebarProps) {
                 active={tab === "details"} 
                 onClick={() => {
                     setTab('details')
-                    router.push(`/law-details/${lawId}?tab=details`)
+                    router.push(`/legal-doc/${lawId}?tab=details`)
                 }}
                 leftIcon={<LawDetailsIcon />} 
             />
-            {/* <SidebarItem 
+            <SidebarItem 
                 name="Peraturan Konsolidasi" 
                 active={tab === "consolidation"} 
                 onClick={() => {
                     setTab('consolidation')
-                    router.push(`/law-details/${lawId}?tab=consolidation`)
+                    router.push(`/legal-doc/${lawId}?tab=consolidation`)
                 }}
                 leftIcon={<ConsolidationIcon />} 
             />
@@ -79,7 +79,7 @@ export function Sidebar({tab, setTab, lawId} : SidebarProps) {
                 active={tab === "history"} 
                 onClick={() => {
                     setTab('history')
-                    router.push(`/law-details/${lawId}?tab=history`)
+                    router.push(`/legal-doc/${lawId}?tab=history`)
                 }}
                 leftIcon={<HistoryIcon />} 
             />
@@ -88,10 +88,10 @@ export function Sidebar({tab, setTab, lawId} : SidebarProps) {
                 active={tab === "law-basis"} 
                 onClick={() => {
                     setTab('law-basis')
-                    router.push(`/law-details/${lawId}?tab=law-basis`)
+                    router.push(`/legal-doc/${lawId}?tab=law-basis`)
                 }}
                 leftIcon={<LawBasisIcon />} 
-            /> */}
+            />
         </div>
     )
 }

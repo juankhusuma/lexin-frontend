@@ -4,7 +4,8 @@ interface LawDetailMetadataType {
     title: string
     subtitle: string
     enacted_date: string
-    change_status: "no-change" | "changed" | "no-effect"
+    change_status: string
+    document_id: string
 }
 
 interface LawDetailType {

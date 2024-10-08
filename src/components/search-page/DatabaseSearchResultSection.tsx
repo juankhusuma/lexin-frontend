@@ -23,7 +23,8 @@ export default function DatabaseSearchResultSection({ searchQuery } : { searchQu
                     subtitle={result._source.tentang}
                     description={result._source.pemrakarsa}
                     releaseDate={result._source.ditetapkan_tanggal}
-                    type={result._source.status}
+                    type={result._source.jenis_bentuk_peraturan}
+                    status={result._source.status}
                 />
             ))}
         </div>

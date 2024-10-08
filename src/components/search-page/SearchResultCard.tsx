@@ -9,7 +9,7 @@ interface SearchResultCardProps {
     description: string,
     releaseDate: string
     type: string,
-    status?: "no-change" | "changed" | "no-effect"
+    status?: string
 }
 export default function SearchResultCard({id, title, subtitle, description, releaseDate, type, status}: SearchResultCardProps) {
     
@@ -26,7 +26,7 @@ export default function SearchResultCard({id, title, subtitle, description, rele
             </p>
             <div className="text-sm flex flex-row items-center">
                 <LawTypeBadge lawType={type} />
-                <LawStatusBadge status={status ?? "no-change"} />
+                <LawStatusBadge status={status ?? "Berlaku"} />
                 <div className="flex flex-row mx-1">
                     <div>
                         Ditetapkan:

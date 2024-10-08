@@ -48,7 +48,8 @@ export default function LawDetailPage() {
                     title: data?._source.title ?? '',
                     subtitle: data?._source.tentang ?? '',
                     enacted_date: data?._source.ditetapkan_tanggal ?? '',
-                    change_status: 'no-change'
+                    change_status: data?._source.status ?? 'Berlaku',
+                    document_id: data?._id ?? ''
                 }}/>
                 {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content}] : []} />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
