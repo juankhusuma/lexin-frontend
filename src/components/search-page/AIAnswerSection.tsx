@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import QuestionAnswerSection from "../gen-ai/QuestionAnswerSection"
 import { Icon } from "@iconify/react/dist/iconify.js"
-import { Loader } from "@mantine/core"
+import ReactLoading from "react-loading"
 
 interface QuestionAnswerObject {
     question: string
@@ -58,7 +58,7 @@ export default function AIAnswerSection({searchQuery} : {searchQuery : string}) 
                     answer={qna.answer}
                 />
             ))}
-            {loadingFollowUpAnswer && <Loader />}
+            {loadingFollowUpAnswer && <ReactLoading type="bubbles" color="#192E59" />}
 
             <div className="text-white bg-dark-navy-blue px-6 py-3 rounded-xl mt-5 w-full flex justify-between items-center">
                 <input
@@ -70,6 +70,9 @@ export default function AIAnswerSection({searchQuery} : {searchQuery : string}) 
                     className="text-md bg-dark-navy-blue w-[80%] focus:outline-none" 
                     type="text"
                     disabled={loadingFollowUpAnswer}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') onSubmitFollowUpQuestion()
+                    }}
                 />
                 <div className={loadingFollowUpAnswer ? "cursor-not-allowed" : "cursor-pointer"} onClick={onSubmitFollowUpQuestion}>
                     <Icon icon="mdi:search" style={{ fontSize: '20px' }} />
