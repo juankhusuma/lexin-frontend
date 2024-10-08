@@ -28,7 +28,7 @@ export default function Navbar() {
       const fromCookie = getCookie('user_data')
       const userData = fromCookie ? JSON.parse(fromCookie) as UserDataResponseType : null
       setLoggedInAs(userData)
-    }, [pathname])
+    }, [pathname, searchParams])
     
     function onSubmitSearchForm() {
       router.push(`/search?q=${encodeURIComponent(search)}`)
@@ -62,7 +62,7 @@ export default function Navbar() {
                 ?
                   <div className="flex flex-col items-start">
                     <p>
-                      {`Logged in as "${loggedInAs.fullname}"`} 
+                      {`${loggedInAs.fullname}`} 
                     </p>
                     <p className="text-xs">
                       Click here to logout

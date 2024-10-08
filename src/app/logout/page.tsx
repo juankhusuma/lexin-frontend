@@ -16,6 +16,6 @@ export default function LogoutPage() {
     }, [])
 
     return (
-        <></>
+        <div className="pl-20">Logging you out, please wait...</div>
     )
 }
