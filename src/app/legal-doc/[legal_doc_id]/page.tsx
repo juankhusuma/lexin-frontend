@@ -49,7 +49,7 @@ export default function LawDetailPage() {
                     change_status: data?._source.status ?? 'Berlaku',
                     document_id: data?._id ?? ''
                 }}/>
-                {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content}] : []} />}
+                {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content[0]}] : []} />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
                 {activeTab === 'history' && <LawHistoryContent />}
                 {activeTab === 'law-basis' && <LawBasisContent />}

@@ -8,7 +8,7 @@ interface DocumentFullSourceType {
     tempat_penetapan: string
     ditetapkan_tanggal: string
     status: string
-    content: string
+    content: string[]
     resource_url: string
     reference_url: string
     filename: string
