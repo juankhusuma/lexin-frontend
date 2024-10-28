@@ -1,20 +1,21 @@
 import EXAMPLE_SEARCH_RESULTS from "@/constants/exampleSearchResults"
 import SearchResultCard from "./SearchResultCard"
 import ResultCount from "./ResultCount"
-import { SearchResult } from "@/networks/response-type/SearchResultResponseType"
+import SearchResultResponseType, { SearchResult } from "@/networks/response-type/SearchResultResponseType"
 import { Loader } from "@mantine/core"
+import useRequest from "@/networks/useRequest"
+import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
 
-interface DatabaseSearchResultSectionProps {
-    searchResults?: SearchResult[]
-    loading: boolean
-}
-export default function DatabaseSearchResultSection({ searchResults = [], loading } : DatabaseSearchResultSectionProps) {
+export default function DatabaseSearchResultSection({ searchQuery } : { searchQuery: string }) {
 
-    const COUNT_RESULT = 10
+    const { data, loading } = useRequest<SearchResultResponseType>(LEGAL_DOCUMENT_ENDPOINTS.GET.searchLegalDocument(searchQuery as string))
+
+    const COUNT_RESULT = data?.total_hits ?? 0
+
     return (
         <div className="flex flex-col">
             <ResultCount count={COUNT_RESULT} />
-            {loading ? <Loader /> : (searchResults ?? []).map(result => (
+            {loading ? <Loader /> : (data?.hits ?? []).map(result => (
                 <SearchResultCard 
                     key={result._id}
                     id={result._id}
@@ -22,7 +23,8 @@ export default function DatabaseSearchResultSection({ searchResults = [], loadin
                     subtitle={result._source.tentang}
                     description={result._source.pemrakarsa}
                     releaseDate={result._source.ditetapkan_tanggal}
-                    type={result._source.status}
+                    type={result._source.jenis_bentuk_peraturan}
+                    status={result._source.status}
                 />
             ))}
         </div>

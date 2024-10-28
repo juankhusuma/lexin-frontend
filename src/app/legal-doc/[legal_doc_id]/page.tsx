@@ -7,8 +7,6 @@ import { SidebarMenuType } from "@/components/law-details/Sidebar"
 import LawDetailsContent from "@/components/law-details/LawDetailsContent"
 import LawHistoryContent from "@/components/law-details/LawHistoryContent"
 import LawContentHeader from "@/components/law-details/LawContentHeader"
-import { LawDetailMetadataType, LawDetailType } from "@/types/LawDetailType"
-import EXAMPLE_LAW_DETAIL from "@/constants/exampleLawDetail"
 import LawConsolidationContent from "@/components/law-details/LawConsolidationContent"
 import LawBasisContent from "@/components/law-details/LawBasisContent"
 import useRequest from "@/networks/useRequest"
@@ -48,9 +46,10 @@ export default function LawDetailPage() {
                     title: data?._source.title ?? '',
                     subtitle: data?._source.tentang ?? '',
                     enacted_date: data?._source.ditetapkan_tanggal ?? '',
-                    change_status: 'no-change'
+                    change_status: data?._source.status ?? 'Berlaku',
+                    document_id: data?._id ?? ''
                 }}/>
-                {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content}] : []} />}
+                {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content[0]}] : []} />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
                 {activeTab === 'history' && <LawHistoryContent />}
                 {activeTab === 'law-basis' && <LawBasisContent />}

@@ -23,7 +23,7 @@ function UnknownTypeBadge() {
 }
 
 function LawTypeBadge({lawType} : {lawType : string}) {
-    if (lawType === "Undang-Undang") return <UndangUndangTypeBadge />
+    if (lawType === "UNDANG-UNDANG") return <UndangUndangTypeBadge />
     if (lawType === "Peraturan Pemerintah") return <PeraturanPemerintahTypeBadge />
     // "Peraturan Pemerintah Pengganti Undang-Undang": "pale-yellow",
     // "Peraturan Presiden": "pale-green-300",

@@ -55,8 +55,14 @@ jobs:
         expect << EOF
           spawn ssh-add id_rsa
           expect "Enter passphrase for id_rsa:"
-          send "$SSH_PASSPHRASE\r"
+          send "$SSH_PRIVATE_KEY_PASSPHRASE"
+          send "\r"
           expect eof
         EOF
         
-        sshpass -p "$VM_PASSWORD" ssh -i id_rsa -o StrictHostKeyChecking=no -J $SSH_TUNNEL_USERNAME@$SSH_TUNNEL_HOST:$SSH_TUNNEL_PORT $VM_USER@$VM_IP "bash -s" < ~/lexin-frontend/deploy.sh
+        sshpass -p "$VM_PASSWORD" ssh -i id_rsa \
+          -o StrictHostKeyChecking=no \
+          -o UserKnownHostsFile=/dev/null \
+          -J $SSH_TUNNEL_USERNAME@$SSH_TUNNEL_HOST:$SSH_TUNNEL_PORT \
+          $VM_USER@$VM_IP \
+          "cd ~/lexin-frontend && bash deploy.sh"

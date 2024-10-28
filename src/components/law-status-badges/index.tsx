@@ -1,7 +1,7 @@
 function NoChangesBadge() {
     return (
         <div className="flex justify-center items-center py-1 px-3 mx-2 border-[1px] border-solid rounded-lg text-green-500 border-green-500 bg-green-100">
-            Belum dihapus/diubah
+            Belum dicabut/diubah
         </div>
     )
 }
@@ -22,10 +22,10 @@ function NoEffectBadge() {
     )
 }
 
-function LawStatusBadge({ status }: { status: "no-change" | "changed" | "no-effect" } ) {
-    if (status === "no-change") return <NoChangesBadge />
-    if (status === "changed") return <ChangedBadge />
-    if (status === "no-effect") return <NoEffectBadge />
+function LawStatusBadge({ status }: { status: string } ) {
+    if (status === "Berlaku") return <NoChangesBadge />
+    if (status === "Tidak Berlaku") return <NoEffectBadge />
+    // if (status === "changed") return <ChangedBadge />
     return <></>
 }
 

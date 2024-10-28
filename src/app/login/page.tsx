@@ -26,7 +26,7 @@ export default function LoginPage() {
             onSuccess(data) {
                 setCookie('access_token', `${data.token_type} ${data.access_token}`)
                 setCookie('refresh_token', `${data.token_type} ${data.refresh_token}`)
-                router.push('/search')
+                router.push('/after-login')
             },
             contentType: 'application/x-www-form-urlencoded'
         }

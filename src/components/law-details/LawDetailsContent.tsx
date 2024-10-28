@@ -1,6 +1,5 @@
 "use client"
 
-import EXAMPLE_LAW_DETAIL from "@/constants/exampleLawDetail"
 import { useState } from "react"
 import { LawDetailType } from "@/types/LawDetailType"
 import { NoChangesBadge, ChangedBadge, NoEffectBadge } from "../law-status-badges"
