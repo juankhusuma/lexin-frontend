@@ -2,7 +2,7 @@
 
 import { Sidebar } from "@/components/law-details/Sidebar"
 import { useParams, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { SidebarMenuType } from "@/components/law-details/Sidebar"
 import LawDetailsContent from "@/components/law-details/LawDetailsContent"
 import LawHistoryContent from "@/components/law-details/LawHistoryContent"
@@ -12,6 +12,9 @@ import LawBasisContent from "@/components/law-details/LawBasisContent"
 import useRequest from "@/networks/useRequest"
 import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
 import { DocumentFullDetailType } from "@/networks/response-type/DocumentFullDetailResponse"
+import LawDocumentLinkType from "@/types/LawDocumentLinkType"
+import LawHistoryLinkType from "@/types/LawHistoryLinkType"
+
 
 export default function LawDetailPage() {
     const { legal_doc_id } = useParams()
@@ -38,21 +41,69 @@ export default function LawDetailPage() {
         console.log(data)
     }, [data])
 
+    const histories = useMemo<LawHistoryLinkType[]>(() => {
+        const result : LawHistoryLinkType[] = []
+
+        if (data && data.dicabut_oleh) {
+            for (const link of data.mencabut) {
+                const newObject : LawHistoryLinkType = {
+                    historyType: "Mencabut",
+                    ...link
+                }
+                result.push(newObject)
+            }
+        }
+
+        if (data && data.dicabut_oleh) {
+            for (const link of data.dicabut_oleh) {
+                const newObject : LawHistoryLinkType = {
+                    historyType: "Dicabut oleh",
+                    ...link
+                }
+                result.push(newObject)
+            }
+        }
+
+        if (data && data.dicabut_oleh) {
+            for (const link of data.mengubah) {
+                const newObject : LawHistoryLinkType = {
+                    historyType: "Mengubah",
+                    ...link
+                }
+                result.push(newObject)
+            }
+        }
+
+        if (data && data.dicabut_oleh) {
+            for (const link of data.diubah_oleh) {
+                const newObject : LawHistoryLinkType = {
+                    historyType: "Diubah oleh",
+                    ...link
+                }
+                result.push(newObject)
+            }
+        }
+
+        return result
+
+    }, [data])
+
+
     return (
         <div className="flex flex-row">
             <Sidebar tab={activeTab} setTab={setActiveTab} lawId={legal_doc_id as string} />
-            <div className="w-4/5 flex flex-col">
+            <div className="w-4/5 flex flex-col translate-x-[20vw]">
                 <LawContentHeader activeTab={activeTab} metadata={{
-                    title: data?._source.title ?? '',
-                    subtitle: data?._source.tentang ?? '',
-                    enacted_date: data?._source.ditetapkan_tanggal ?? '',
-                    change_status: data?._source.status ?? 'Berlaku',
-                    document_id: data?._id ?? ''
+                    title: data?.title ?? '',
+                    subtitle: data?.tentang ?? '',
+                    enacted_date: data?.ditetapkan_tanggal ?? '',
+                    change_status: data?.status ?? 'Berlaku',
+                    document_id: legal_doc_id as string
                 }}/>
-                {activeTab === 'details' && <LawDetailsContent content={data ? [{type: 'paragraph', content: data?._source.content[0]}] : []} />}
+                {activeTab === 'details' && <LawDetailsContent />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
-                {activeTab === 'history' && <LawHistoryContent />}
-                {activeTab === 'law-basis' && <LawBasisContent />}
+                {activeTab === 'history' && <LawHistoryContent histories={histories} />}
+                {activeTab === 'law-basis' && <LawBasisContent bases={data?.dasar_hukum ?? []} />}
             </div>
         </div>
     )

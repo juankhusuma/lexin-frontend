@@ -1,4 +1,7 @@
-interface DocumentFullSourceType {
+import LawDocumentLinkType from "@/types/LawDocumentLinkType"
+
+
+export interface DocumentFullDetailType {
     title: string
     jenis_bentuk_peraturan: string
     pemrakarsa: string
@@ -8,15 +11,14 @@ interface DocumentFullSourceType {
     tempat_penetapan: string
     ditetapkan_tanggal: string
     status: string
-    content: string[]
     resource_url: string
     reference_url: string
     filename: string
-}
-
-export interface DocumentFullDetailType {
-    _index: string,
-    _id: string,
-    _score: number,
-    _source: DocumentFullSourceType
+    dasar_hukum: LawDocumentLinkType[]
+    mengubah: LawDocumentLinkType[]
+    diubah_oleh: LawDocumentLinkType[]
+    mencabut: LawDocumentLinkType[]
+    dicabut_oleh: LawDocumentLinkType[]
+    melaksanakan_amanat_peraturan: LawDocumentLinkType[],
+    dilaksanakan_oleh_peraturan_pelaksana: LawDocumentLinkType[],
 }

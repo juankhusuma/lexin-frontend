@@ -5,8 +5,8 @@ interface ContentNodeProps {
 }
 export default function ContentNode({node} : ContentNodeProps) {
     const isExplanation : boolean = node.type === "explanation"
-    const isCentered = true
-    // const isCentered : boolean = node.type === "title" || node.type === "header" || node.type === "subheader"
+    // const isCentered = true
+    const isCentered : boolean = node.type === "title" || node.type === "header" || node.type === "subheader"
     const isBold : boolean = node.type === "title" || node.type === "header"
     const isSemibold: boolean = node.type === "subheader"
 
@@ -19,7 +19,7 @@ export default function ContentNode({node} : ContentNodeProps) {
         <></>
         : 
         <div 
-            className={`my-1 ${isCentered && "text-center"} ${isBold && "font-bold"} ${isSemibold && "font-semibold"}`} 
+            className={`my-1 text-xl ${isCentered && "text-center"} ${isBold && "font-bold"} ${isSemibold && "font-semibold"} w-full`} 
             dangerouslySetInnerHTML={{__html: formattedContent}} 
         />
     )

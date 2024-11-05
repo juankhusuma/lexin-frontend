@@ -7,6 +7,7 @@ interface UseRequestOptions<T> {
     onError?: () => void
     body?: {[a: string]: any}
     contentType?: 'application/json' | 'application/x-www-form-urlencoded'
+    params?: {[key: string] : any}
 }
 
 export default function useRequest<T>(endpoint : EndpointObject, options?: UseRequestOptions<T>) : {
@@ -22,6 +23,8 @@ export default function useRequest<T>(endpoint : EndpointObject, options?: UseRe
     const getContentType = options?.contentType ?? 'application/json'
     const getBody = (getContentType === 'application/json') ? JSON.stringify(options?.body ?? {}) : new URLSearchParams(options?.body ?? {})
 
+    const paramStr = options?.params ? `?${new URLSearchParams(options?.params).toString()}` : ""
+
     function isMethodAllowsBody() {
         return (
             endpoint.options?.method === "POST" || 
@@ -34,12 +37,10 @@ export default function useRequest<T>(endpoint : EndpointObject, options?: UseRe
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch(endpoint.url, {
+            const res = await fetch(`${endpoint.url}${paramStr}`, {
                 method: endpoint.options?.method ?? "GET",
                 headers: {
-                    'Authorization': endpoint.options?.requireAuth && getCookie('access_token')
-                        ? `${getCookie('access_token')?.valueOf()}`
-                        : '',
+                    'Authorization': getCookie('access_token') ? `${getCookie('access_token')?.valueOf()}` : '',
                     'Content-Type': getContentType,
                 },
                 body: (isMethodAllowsBody() && options?.body) ? getBody : null,

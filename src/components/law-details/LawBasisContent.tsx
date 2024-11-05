@@ -1,46 +1,55 @@
+import LawDocumentLinkType from "@/types/LawDocumentLinkType"
 import Link from "next/link"
 
 interface BasisCardProps {
+    no: number
     documentId: string
     title: string
     description: string
-    enactedDate?: Date
 } 
 function BasisCard({
+    no,
     documentId,
     title,
     description,
-    enactedDate
 }: BasisCardProps) {
     return (
-        <article className="flex flex-col items-start mb-8">
-            <Link 
-                href={`/legal-docs/${documentId}`} 
-                className="text-dark-navy-blue font-bold text-lg"
-            >
-                {title}
-            </Link>
-            <div className="font-semibold text-sm text-darkGrayText">
-                {description}
+        <article className="flex flex-row items-start mb-10">
+            <div className='text-white bg-dark-navy-blue rounded-full w-8 h-8 flex justify-center items-center'>
+                {no}
+            </div>
+            <div className="flex flex-col ml-2 translate-y-1">
+                <Link 
+                    href={`/legal-docs/${documentId}`} 
+                    className="text-dark-navy-blue font-bold text-lg mb-1"
+                >
+                    {title}
+                </Link>
+
+                <div className="text-sm text-darkGrayText">
+                    {description}
+                </div>
+
             </div>
 
         </article>
     )
 } 
 
-export default function LawBasisContent() {
+interface LawBasisContentProps {
+    bases: LawDocumentLinkType[]
+}
+export default function LawBasisContent({bases} : LawBasisContentProps) {
     return (
         <div className="pl-8 pt-8">
-            <BasisCard 
-                documentId="uud-1945"
-                title="Undang-Undang Dasar 1945"
-                description="Undang-Undang Dasar 1945"
-            />
-            <BasisCard 
-                documentId="uud-1945"
-                title="Undang-Undang Nomor 3 Tahun 1999"
-                description="Tentang Kesehatan Karyawan"
-            />
+            {bases.map((b, idx) => (
+                <BasisCard 
+                    no={idx+1}
+                    documentId={b.id}
+                    title={b.title}
+                    description=""
+                />
+            ))}
         </div>
     )
 }

@@ -1,3 +1,5 @@
+import LawDocumentLinkType from "@/types/LawDocumentLinkType"
+import LawHistoryLinkType from "@/types/LawHistoryLinkType"
 import Link from "next/link"
 
 interface HistoryCardProps {
@@ -5,49 +7,46 @@ interface HistoryCardProps {
     historyType: string
     title: string
     description: string
-    enactedDate?: Date
 }
 function HistoryCard({
     documentId,
     historyType,
     title,
-    description,
-    enactedDate
+    description
 }: HistoryCardProps) {
     return (
-        <article className="flex flex-col items-start mb-5">
+        <article className="flex flex-col items-start mb-8">
             <div className="mb-2 text-sm text-bright-blue font-semibold rounded-lg bg-light-gray py-1 pl-3 pr-1 border-l-4 border-solid border-bright-blue">
                 {historyType}
             </div>
             <Link 
                 href={`/legal-docs/${documentId}`} 
-                className="text-dark-navy-blue font-bold text-lg"
+                className="text-dark-navy-blue font-bold text-lg mb-1"
             >
                 {title}
             </Link>
-            <div className="font-semibold text-sm text-darkGrayText">
+            <div className="text-sm text-darkGrayText">
                 {description}
             </div>
         </article>
     )
 } 
 
-export default function LawHistoryContent() {
+interface LawHistoryContentProps {
+    histories?: LawHistoryLinkType[]
+}
+export default function LawHistoryContent({histories = []} : LawHistoryContentProps) {
     return (
         <div className="">
             <div className="pl-8 pt-10">
-                <HistoryCard 
-                    documentId={'utf6t677i1e3d7'}
-                    historyType={'Mencabut sebagian oleh'}
-                    title={'Undang-Undang Nomor 1 Tahun 2024'}
-                    description={'sdfghjklkjhgfdfghjkjhgfdsdfghjkjhgfdsdfghjkjhgfdsdfghjk'}
-                />
-                <HistoryCard 
-                    documentId={'u3f6t677i1e3d7'}
-                    historyType={'Mencabut sebagian oleh'}
-                    title={'Undang-Undang Nomor 2 Tahun 2024'}
-                    description={'sdfghjklkjhgfdfghjkjhgfdsdfghjkjhgfdsdfghjkjhgfdsdfghjk'}
-                />
+                {histories.map(h => (
+                    <HistoryCard 
+                        documentId={h.id}
+                        historyType={h.historyType}
+                        title={h.title}
+                        description={''}
+                    />
+                ))}
             </div>
         </div>
     )

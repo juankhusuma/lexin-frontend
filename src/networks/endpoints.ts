@@ -24,8 +24,12 @@ const AUTH_ENDPOINTS = {
 
 const LEGAL_DOCUMENT_ENDPOINTS = {
     GET: {
-        getLawDocumentById: (lawId : any) => createEndpoint(`/api/v1/legal-document/detail-full/${lawId}`),
-        searchLegalDocument: (query : string) => createEndpoint(`/api/v1/legal-document/search?query=${encodeURIComponent(query)}`)
+        getLawDocumentById: (lawId : any) => createEndpoint(`/api/v1/legal-document/detail/${lawId}`),
+        searchLegalDocument: (query : string) => createEndpoint(`/api/v1/legal-document/search?query=${encodeURIComponent(query)}`),
+        getLawDocumentContents: (lawId : any) => createEndpoint(`/api/v1/legal-document/detail-content/${lawId}`, {
+            method: 'GET',
+            autoFetch: false
+        })
     }
 }
 
