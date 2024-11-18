@@ -21,12 +21,14 @@
     "cookies-next": "^4.2.1",
     "js-cookie": "^3.0.5",
     "next": "14.2.5",
+    "pdf-viewer-reactjs": "^2.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-loading": "^2.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pdf-viewer-reactjs": "^2.2.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "postcss": "^8",

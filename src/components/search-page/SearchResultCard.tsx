@@ -1,6 +1,5 @@
 import { LawTypeBadge } from "../law-type-badges"
 import { LawStatusBadge } from "../law-status-badges"
-import formatDate from "@/app/utils/formatDate"
 
 interface SearchResultCardProps {
     id: string,

@@ -51,7 +51,7 @@ export default function AIAnswerSection({searchQuery} : {searchQuery : string}) 
     }, [])
 
     return (
-        <div className="flex flex-col items-start m-4 p-4 bg-light-blue rounded-xl">
+        <div className="flex flex-col items-start mx-4 mt-4 mb-12 p-4 bg-light-blue rounded-xl">
             {questionAnswerInteractions.map(qna => (
                 <QuestionAnswerSection 
                     question={qna.question}

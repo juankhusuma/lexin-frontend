@@ -25,7 +25,7 @@ function NoEffectBadge() {
 function LawStatusBadge({ status }: { status: string } ) {
     if (status === "Berlaku") return <NoChangesBadge />
     if (status === "Tidak Berlaku") return <NoEffectBadge />
-    // if (status === "changed") return <ChangedBadge />
+    if (status === "Telah Diubah") return <ChangedBadge />
     return <></>
 }
 

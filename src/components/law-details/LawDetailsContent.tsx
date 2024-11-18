@@ -11,8 +11,11 @@ import useRequest from "@/networks/useRequest"
 import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
 import DocumentContentsDetailResponseType from "@/networks/response-type/DocumentContentsDetailResponse"
 import ReactLoading from "react-loading"
-import { Box } from "@mantine/core"
+import { Box, Tabs } from "@mantine/core"
 import { useInViewport } from '@mantine/hooks';
+import classes from './tab.module.css'
+import LawDetailParsedView from "./LawDetailParsedView"
+import LawDetailPDFView from "./LawDetailPDFView"
 
 
 
@@ -57,20 +60,32 @@ export default function LawDetailsContent() {
     }, [inViewport])
 
 
+    const [tab, setTab] = useState<string | null>('pdf')
 
     return (
         <div className="flex flex-col py-7 px-20">
-            {allNodes.map((node) => (
-                <ContentNode node={node} />
-            ))}
-            {isLoadingMoreNodes && (
-            <div className="flex flex-col justify-center items-center">
-                <ReactLoading type="bubbles" color="#192E59" />
-            </div>
-            )}
-            <Box ref={ref} className="flex flex-row justify-center items-center text-sm">
-                Scroll to load more...
-            </Box>
+            <Tabs 
+                // variant="none" 
+                color="#192E59"
+                value={tab} 
+                onChange={setTab} 
+            >
+                <Tabs.List>
+                    <Tabs.Tab value="pdf">
+                        PDF View
+                    </Tabs.Tab>
+                    <Tabs.Tab value="parsed">
+                        Parsed View
+                    </Tabs.Tab>
+                </Tabs.List>
+
+                <Tabs.Panel value="pdf">
+                    <LawDetailPDFView />
+                </Tabs.Panel>
+                <Tabs.Panel value="parsed">
+                    <LawDetailParsedView />
+                </Tabs.Panel>
+            </Tabs>
         </div>
     )
 }

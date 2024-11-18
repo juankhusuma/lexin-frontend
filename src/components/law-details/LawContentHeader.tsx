@@ -37,19 +37,13 @@ export default function LawContentHeader({activeTab, metadata} : LawContentHeade
                 </span>
             </div>
             <div className="mt-4 flex">
-                <div className="cursor-pointer flex items-center mr-3">
-                    <Icon icon="mdi:bookmark-outline" style={{fontSize: '25px'}}/>
-                    <p className="font-semibold text-sm ml-1">
-                        Simpan
-                    </p>
-                </div>
                 <a 
                     target="_blank" 
                     href={`${process.env.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL}/api/v1/legal-document/download/${metadata.document_id}`} 
-                    className="cursor-pointer flex items-center ml-3"
+                    className="text-black cursor-pointer flex flex-row items-center ml-3"
                 >
-                    <Icon icon="mdi:download-box" style={{ fontSize: '25px' }} />
-                    <p className="font-semibold text-sm ml-1">
+                    <Icon icon="mdi:download-box" style={{ fontSize: '30px' }} />
+                    <p className="font-semibold text-sm ml-1 text-center">
                         Unduh
                     </p>
                 </a>

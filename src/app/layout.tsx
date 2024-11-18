@@ -1,6 +1,7 @@
 "use client"
 
 import "./globals.css";
+import '@mantine/core/styles.css';
 import Navbar from "@/components/layout/Navbar";
 import LexinThemeProvider from "./utils/theme";
 import { Suspense, useEffect } from "react";

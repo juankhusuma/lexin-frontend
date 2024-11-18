@@ -2,6 +2,31 @@ import { useEffect, useState } from "react";
 import { EndpointObject } from "./endpoint-base";
 import { getCookie } from "cookies-next";
 
+function encodeKeyOrValue(value: any) {
+    return encodeURIComponent(value).replace(/ /g, '%20'); // Replace spaces with '+' for better URL compatibility
+}
+  
+
+function buildQueryString(params : {[k: string] : any}) {
+    if (!params || typeof params !== 'object') {
+      throw new Error("Input must be an object");
+    }
+  
+    const queryString = Object.entries(params)
+      .filter(([_, value]) => value !== undefined && value !== null) // Exclude undefined or null values
+      .map(([key, value]) => {
+        if (Array.isArray(value)) {
+          // Convert arrays into multiple key=value pairs
+          return value.map(item => `${encodeKeyOrValue(key)}=${encodeKeyOrValue(item)}`).join('&');
+        }
+        return `${encodeKeyOrValue(key)}=${encodeKeyOrValue(value)}`;
+      })
+      .join('&');
+  
+    return queryString ? `?${queryString}` : '';
+  }
+  
+
 interface UseRequestOptions<T> {
     onSuccess?: (data: T) => void
     onError?: () => void
@@ -23,7 +48,7 @@ export default function useRequest<T>(endpoint : EndpointObject, options?: UseRe
     const getContentType = options?.contentType ?? 'application/json'
     const getBody = (getContentType === 'application/json') ? JSON.stringify(options?.body ?? {}) : new URLSearchParams(options?.body ?? {})
 
-    const paramStr = options?.params ? `?${new URLSearchParams(options?.params).toString()}` : ""
+    const paramStr = options?.params ? buildQueryString(options.params) : ""
 
     function isMethodAllowsBody() {
         return (
