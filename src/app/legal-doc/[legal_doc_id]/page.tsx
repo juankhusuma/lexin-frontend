@@ -100,7 +100,7 @@ export default function LawDetailPage() {
                     change_status: data?.status ?? 'Berlaku',
                     document_id: legal_doc_id as string
                 }}/>
-                {activeTab === 'details' && <LawDetailsContent />}
+                {activeTab === 'details' && <LawDetailsContent pdfLink={data?.resource_urls[0]} />}
                 {activeTab === 'consolidation' && <LawConsolidationContent />}
                 {activeTab === 'history' && <LawHistoryContent histories={histories} />}
                 {activeTab === 'law-basis' && <LawBasisContent bases={data?.dasar_hukum ?? []} />}

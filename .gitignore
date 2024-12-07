@@ -37,3 +37,6 @@ next-env.d.ts
 
 # manual cloud run deploy sh file
 manual-deploy-to-cloud-run.sh
+
+.idea
+.env

@@ -18,8 +18,10 @@ import LawDetailParsedView from "./LawDetailParsedView"
 import LawDetailPDFView from "./LawDetailPDFView"
 
 
-
-export default function LawDetailsContent() {
+interface LawDetailsContentProps {
+    pdfLink?: string
+}
+export default function LawDetailsContent({pdfLink} : LawDetailsContentProps) {
     const { legal_doc_id } = useParams()
 
     const [pageToFetch, setPageToFetch] = useState<number>(1)
@@ -80,7 +82,7 @@ export default function LawDetailsContent() {
                 </Tabs.List>
 
                 <Tabs.Panel value="pdf">
-                    <LawDetailPDFView />
+                    <LawDetailPDFView pdfLink={pdfLink}/>
                 </Tabs.Panel>
                 <Tabs.Panel value="parsed">
                     <LawDetailParsedView />

@@ -13,6 +13,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/runtime": "^7.26.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@iconify/react": "^5.0.2",
@@ -29,8 +30,8 @@
   "devDependencies": {
     "@types/node": "^20",
     "@types/pdf-viewer-reactjs": "^2.2.5",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

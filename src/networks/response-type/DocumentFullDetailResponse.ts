@@ -11,8 +11,8 @@ export interface DocumentFullDetailType {
     tempat_penetapan: string
     ditetapkan_tanggal: string
     status: string
-    resource_url: string
-    reference_url: string
+    resource_urls: string[]
+    reference_urls: string[]
     filename: string
     dasar_hukum: LawDocumentLinkType[]
     mengubah: LawDocumentLinkType[]

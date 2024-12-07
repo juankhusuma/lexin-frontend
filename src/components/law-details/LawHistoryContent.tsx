@@ -20,7 +20,7 @@ function HistoryCard({
                 {historyType}
             </div>
             <Link 
-                href={`/legal-docs/${documentId}`} 
+                href={`/legal-doc/${documentId}`} 
                 className="text-dark-navy-blue font-bold text-lg mb-1"
             >
                 {title}
