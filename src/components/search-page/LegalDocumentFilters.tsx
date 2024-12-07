@@ -55,11 +55,15 @@ interface LegalDocumentFiltersProps {
     setDocTypeValue: (sl: string[]) => void
     setStatusValue: (s: string) => void
     disabled: boolean
+    filtersDocTypeCountMap: {[key: string]: number}
+    filtersStatusCountMap: {[key: string]: number}
 }
 export default function LegalDocumentFilters({
     setDocTypeValue,
     setStatusValue,
-    disabled
+    disabled,
+    filtersDocTypeCountMap,
+    filtersStatusCountMap
 } : LegalDocumentFiltersProps) {
 
     const [tempDocTypes, setTempDocTypes] = useState<string[]>([])
@@ -128,7 +132,7 @@ export default function LegalDocumentFilters({
                             </div>
                         </div>
                         <div className="bg-blue-200 px-3 py-1 rounded-full font-semibold text-xs text-dark-navy-blue">
-                            99
+                            {filtersDocTypeCountMap[ld.value] ?? 0}
                         </div>
                     </div>
                 ))}

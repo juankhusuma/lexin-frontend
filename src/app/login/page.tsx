@@ -15,22 +15,38 @@ export default function LoginPage() {
 
     const [emailInput, changeEmailInput] = useState<string>("")
     const [passwordInput, changePasswordInput] = useState<string>("")
+    const [loadingLogin, setLoadingLogin] = useState<boolean>(false)
+    const [loginError, setLoginError] = useState<boolean>(false)
 
-    const { loading, error: loginError, fetchCallback: fetchLogin } = useRequest<LoginResponseType>(
-        AUTH_ENDPOINTS.POST.login, 
-        {
-            body: {
-                username: emailInput, 
-                password: passwordInput,
-            },
-            onSuccess(data) {
-                setCookie('access_token', `${data.token_type} ${data.access_token}`)
-                setCookie('refresh_token', `${data.token_type} ${data.refresh_token}`)
-                router.push('/after-login')
-            },
-            contentType: 'application/x-www-form-urlencoded'
+    
+    async function fetchLogin() {
+        setLoadingLogin(true)
+        setLoginError(false) 
+
+        const res = await fetch(
+            AUTH_ENDPOINTS.POST.login.url,
+            {
+                method: "POST",
+                headers: {
+                    'Application-Type' : 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    username: emailInput, 
+                    password: passwordInput,
+                })
+            }
+        )
+
+        if (res.ok) {
+            const data = await res.json()
+            setCookie('access_token', `${data.token_type} ${data.access_token}`)
+            setCookie('refresh_token', `${data.token_type} ${data.refresh_token}`)
+            router.push('/after-login')
+        } else {
+            setLoginError(true)
         }
-    )
+        setLoadingLogin(false)
+    }
 
 
     async function onLoginFormSubmit() {
@@ -61,11 +77,11 @@ export default function LoginPage() {
                         controlValue={passwordInput}
                         controlOnChange={changePasswordInput}
                     />
-                    {loading && <p className="text-xs my-3">Logging In...</p>}
+                    {loadingLogin && <p className="text-xs my-3">Logging In...</p>}
                     {loginError && <p className="text-red-500 text-xs my-3">Terdapat kesalahan pada proses login. Silahkan coba lagi</p>}
                     <PrimaryButton 
-                        disabled={loading} 
-                        loading={true} 
+                        disabled={loadingLogin} 
+                        loading={loadingLogin} 
                         label="Masuk" 
                         onClick={onLoginFormSubmit} 
                         type="button" 
