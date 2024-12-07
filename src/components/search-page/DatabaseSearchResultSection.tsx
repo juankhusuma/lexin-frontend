@@ -90,8 +90,6 @@ export default function DatabaseSearchResultSection({ searchQuery } : { searchQu
             <LegalDocumentFilters
                 filtersDocTypeCountMap={filtersDocTypeCountMap}
                 filtersStatusCountMap={filtersStatusCountMap}
-                // docTypeFiltersList={data?.aggregations.jenis_bentuk_peraturan_uniques.buckets}
-                // statusFiltersList={data?.aggregations.status_uniques.buckets}
                 setDocTypeValue={setDocTypeValue}
                 setStatusValue={setStatusValue}
                 disabled={loading}
