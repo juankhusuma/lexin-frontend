@@ -108,8 +108,13 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string }
         <div className="flex flex-col items-start mx-4 mt-4 mb-12 p-4 bg-light-blue rounded-xl">
             {isLoggedIn ? (
                 <>
-                    <div>
-                        Connection status: {chatBotConnectionStatus}
+                    <div className="text-xs flex flex-row">
+                        <div className="font-semibold mr-2">
+                            Connection to AI Chatbot status: 
+                        </div>
+                        <div>
+                            {chatBotConnectionStatus}
+                        </div>
                     </div>
                     {questionAnswerInteractions.map((qna, index) => (
                         <QuestionAnswerSection key={index} question={qna.question} answer={qna.answer} />
