@@ -32,11 +32,11 @@ function FeedbackButtons({ answer } : {answer: string}) {
     }
 
     return (
-        <div className="flex items-center">
+        <div className="flex items-center ml-5">
             <div onClick={onCopy} className="cursor-pointer">
                 <Icon icon="iconamoon:copy-duotone" style={{fontSize: '20px'}} />                
             </div>
-            <div onClick={onLike} className="ml-2 cursor-pointer">
+            {/* <div onClick={onLike} className="ml-2 cursor-pointer">
                 <Icon icon={liked ? "mdi:like" : "mdi:like-outline"} style={{fontSize: '20px'}} />
             </div>
             <div onClick={onDislike} className="ml-2 cursor-pointer">
@@ -44,7 +44,7 @@ function FeedbackButtons({ answer } : {answer: string}) {
             </div>
             <div onClick={onBookmark} className="ml-2 cursor-pointer">
                 <Icon icon={bookmarked ? "mdi:bookmark" : "mdi:bookmark-outline"} style={{fontSize: '20px'}} />
-            </div>
+            </div> */}
         </div>
     )
 }
