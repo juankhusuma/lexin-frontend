@@ -23,7 +23,6 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string }
     const [isFirstQuestionSubmitted, setIsFirstQuestionSubmitted] = useState<boolean>(false)
     const [chatBotConnectionStatus, setChatBotConnectionStatus] = useState<string>("Connecting...")
 
-    const chatRoomId = 1;
     const authContext = useAuth();
     const isLoggedIn = !!authContext.accessToken;
 
@@ -41,7 +40,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string }
 
         const baseUrl = getBackendUrlWithoutHttp();
         const accessToken = authContext.accessToken?.split(" ")[1];
-        const ws = new WebSocket(`wss://${baseUrl}/api/v1/chat/ws?token=${accessToken}&chat_room_id=${chatRoomId}`);
+        const ws = new WebSocket(`wss://${baseUrl}/api/v1/chat/ws?token=${accessToken}`);
 
         ws.onopen = () => {
             console.log("WebSocket connection established.");
