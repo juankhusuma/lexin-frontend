@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import QuestionAnswerSection from "../gen-ai/QuestionAnswerSection"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ReactLoading from "react-loading"
+import { getCookie } from "cookies-next"
+import { useAuth } from "@/contexts/authContext"
 
 interface QuestionAnswerObject {
     question: string
@@ -18,6 +20,10 @@ export default function AIAnswerSection({searchQuery} : {searchQuery : string}) 
             answer: initialAnswer
         }
     ])
+
+    const getAuthContext = useAuth()
+
+    const isLoggedIn = !!getAuthContext.accessToken
 
 
     function appendNewInteraction(question: string, answer: string) {
@@ -52,32 +58,45 @@ export default function AIAnswerSection({searchQuery} : {searchQuery : string}) 
 
     return (
         <div className="flex flex-col items-start mx-4 mt-4 mb-12 p-4 bg-light-blue rounded-xl">
-            {questionAnswerInteractions.map(qna => (
-                <QuestionAnswerSection 
-                    question={qna.question}
-                    answer={qna.answer}
-                />
-            ))}
-            {loadingFollowUpAnswer && <ReactLoading type="bubbles" color="#192E59" />}
+            {isLoggedIn ? (
+                <>
+                    {questionAnswerInteractions.map(qna => (
+                        <QuestionAnswerSection 
+                            question={qna.question}
+                            answer={qna.answer}
+                        />
+                    ))}
+                    {loadingFollowUpAnswer && <ReactLoading type="bubbles" color="#192E59" />}
 
-            <div className="text-white bg-dark-navy-blue px-6 py-3 rounded-xl mt-5 w-full flex justify-between items-center">
-                <input
-                    value={followUpInput}
-                    onChange={e => {
-                        setFollowUpInput(e.target.value)
-                    }} 
-                    placeholder="Tanyakan pertanyaan lanjutan" 
-                    className="text-md bg-dark-navy-blue w-[80%] focus:outline-none" 
-                    type="text"
-                    disabled={loadingFollowUpAnswer}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') onSubmitFollowUpQuestion()
-                    }}
-                />
-                <div className={loadingFollowUpAnswer ? "cursor-not-allowed" : "cursor-pointer"} onClick={onSubmitFollowUpQuestion}>
-                    <Icon icon="mdi:search" style={{ fontSize: '20px' }} />
+                    <div className="text-white bg-dark-navy-blue px-6 py-3 rounded-xl mt-5 w-full flex justify-between items-center">
+                        <input
+                            value={followUpInput}
+                            onChange={e => {
+                                setFollowUpInput(e.target.value)
+                            }} 
+                            placeholder="Tanyakan pertanyaan lanjutan" 
+                            className="text-md bg-dark-navy-blue w-[80%] focus:outline-none" 
+                            type="text"
+                            disabled={loadingFollowUpAnswer}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') onSubmitFollowUpQuestion()
+                            }}
+                        />
+                        <div className={loadingFollowUpAnswer ? "cursor-not-allowed" : "cursor-pointer"} onClick={onSubmitFollowUpQuestion}>
+                            <Icon icon="mdi:search" style={{ fontSize: '20px' }} />
+                        </div>
+                    </div>
+                </>
+            ) 
+            : 
+            (
+                <div className="flex flex-col justify-center items-center w-full py-6">
+                    <Icon icon="icomoon-free:lab" width="50" height="50" />
+                    <p className="mt-3">
+                        Anda harus login untuk menggunakan AI chatbot Lexin. Klik <a className="font-semibold underline" href="/login">disini</a> untuk login.
+                    </p>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

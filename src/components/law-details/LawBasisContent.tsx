@@ -20,7 +20,7 @@ function BasisCard({
             </div>
             <div className="flex flex-col ml-2 translate-y-1">
                 <Link 
-                    href={`/legal-docs/${documentId}`} 
+                    href={`/legal-doc/${documentId}`} 
                     className="text-dark-navy-blue font-bold text-lg mb-1"
                 >
                     {title}

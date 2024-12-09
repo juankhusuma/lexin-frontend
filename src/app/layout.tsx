@@ -9,6 +9,7 @@ import Loading from "@/components/layout/Loading";
 import { usePathname, useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next";
 import UserDataResponseType from "@/networks/response-type/UserDataResponseType";
+import { AuthProvider } from "@/contexts/authContext";
 
 export default function RootLayout({
   children,
@@ -48,14 +49,16 @@ export default function RootLayout({
   return (
     <html lang="en">
         <body>
-          <LexinThemeProvider>
-            <Suspense fallback={<Loading />}>
-              <Navbar />
-              <main className="bg-offwhite min-h-[calc(100vh-64px)] pt-24">
-                {children}
-              </main>
-            </Suspense>
-          </LexinThemeProvider>
+          <AuthProvider>
+            <LexinThemeProvider>
+              <Suspense fallback={<Loading />}>
+                <Navbar />
+                <main className="bg-offwhite min-h-[calc(100vh-64px)] pt-24">
+                  {children}
+                </main>
+              </Suspense>
+            </LexinThemeProvider>
+          </AuthProvider>
         </body>
     </html>
   );

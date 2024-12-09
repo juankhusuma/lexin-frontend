@@ -1,11 +1,11 @@
 'use client'
 
+import { useAuth } from "@/contexts/authContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import ReactLoading from "react-loading";
 
 export default function AfterLoginPage() {
-
     const router = useRouter()
 
     useEffect(() => {

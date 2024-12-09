@@ -4,16 +4,16 @@ export default function TrendingSearchSection() {
 
     const data = [
         {
-            value: "apa itu uu ite"
+            value: "undang-undang transaksi elektronik"
         },
         {
-            value: "keputusan uu pilkada"
+            value: "undang-undang perlindungan data pribadi"
         },
         {
-            value: "apa itu undang undang dasar 1945"
+            value: "apa itu undang-undang 1000 hari pertama"
         },
         {
-            value: "apakah presiden boleh ikut kampanye"
+            value: "apa saja hak karyawan pkwt"
         }
     ]
 

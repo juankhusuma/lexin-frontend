@@ -64,10 +64,10 @@ export default function QuestionAnswerSection({
 
 
     return (
-        <div className="flex flex-col mb-6">
+        <>
             <UserChatBox message={question} />
             <AIAnswer message={answer} />
             {getShowUserFeedbackButtons && <FeedbackButtons answer={answer}/>}
-        </div>
+        </>
     )
 }

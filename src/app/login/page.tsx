@@ -9,8 +9,10 @@ import useRequest from "@/networks/useRequest";
 import { setCookie } from "cookies-next";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/authContext";
 
 export default function LoginPage() {
+    const auth = useAuth()
     const router = useRouter()
 
     const [emailInput, changeEmailInput] = useState<string>("")
@@ -41,6 +43,7 @@ export default function LoginPage() {
             const data = await res.json()
             setCookie('access_token', `${data.token_type} ${data.access_token}`)
             setCookie('refresh_token', `${data.token_type} ${data.refresh_token}`)
+            auth.setAccessToken(`${data.token_type} ${data.access_token}`)
             router.push('/after-login')
         } else {
             setLoginError(true)

@@ -31,8 +31,12 @@ export default function Navbar() {
       setLoggedInAs(userData)
     }, [pathname, searchParams])
     
-    function onSubmitSearchForm() {
-      router.push(`/search?q=${encodeURIComponent(search)}`)
+    function onSubmit() {
+      if (search) {
+          const params = new URLSearchParams({ q: search }).toString();
+          const url = `/search?${params}`
+          router.push(url);
+      }
     }
 
     return (
@@ -47,13 +51,21 @@ export default function Navbar() {
           : <div />
           }
           {inSearchResultPage && 
-            <form onSubmit={onSubmitSearchForm}>
+            <div 
+              onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                      e.preventDefault()
+                      onSubmit()
+                  }
+              }} 
+              className="mx-36"
+            >
               <input 
                 className="w-[600px] p-2 rounded-xl -translate-x-36" 
                 value={search} 
                 onChange={(event) => setSearch(event.currentTarget.value)}
               />
-            </form>
+            </div>
           }
           <Link href={loggedInAs ? "/logout" : "/login"} className="flex flex-row items-center"> 
             <Icon icon="mdi:account-circle" style={{fontSize: '40px', color: 'white'}} />

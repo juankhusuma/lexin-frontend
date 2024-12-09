@@ -11,7 +11,10 @@ export default function SearchFormPage() {
 
     function onSubmit() {
         if (searchInput) {
-            router.push(`/search?q=${encodeURIComponent(searchInput)}`)
+            const params = new URLSearchParams({ q: searchInput }).toString();
+            const url = `/search?${params}`
+            console.log(`da url: ${url}`)
+            router.push(url);
         }
     }
 
@@ -23,13 +26,21 @@ export default function SearchFormPage() {
                     Lexin
                 </h1>
             </div>
-            <form onSubmit={onSubmit} className="mx-36">
+            <div 
+                onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault()
+                        onSubmit()
+                    }
+                }} 
+                className="mx-36"
+            >
                 <BigTextField 
                     placeholder="Cari disini" 
                     controlValue={searchInput} 
                     controlOnChange={changeSearchInput} 
                 />
-            </form>
+            </div>
             <TrendingSearchSection />
         </div>
     )
