@@ -13,12 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Cloud SDK
+            - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: 'latest'
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: lexin-ta
+
+      - name: Authenticate to Google Cloud
+        run: |
+          echo "$GCP_SA_KEY" | gcloud auth activate-service-account --key-file=-
+          gcloud config set project lexin-ta
 
       - name: Build and push Docker image to Container Registry
         run: |
