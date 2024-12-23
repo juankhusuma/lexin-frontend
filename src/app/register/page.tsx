@@ -16,8 +16,9 @@ export default function LoginPage() {
     const [nameInput, changeNameInput] = useState<string>("")
     const [emailInput, changeEmailInput] = useState<string>("")
     const [passwordInput, changePasswordInput] = useState<string>("")
+    const [loadingRegister, setLoadingRegister] = useState<boolean>(false)
 
-    const { loading, error, fetchCallback } = useRequest<RegisterResponseType>(
+    const { error, fetchCallback } = useRequest<RegisterResponseType>(
         AUTH_ENDPOINTS.POST.register,
         {
             body: {
@@ -32,7 +33,13 @@ export default function LoginPage() {
     )
 
     async function handleOnPressRegister() {
-        fetchCallback()
+        setLoadingRegister(true)
+
+        fetchCallback().then(_d => {
+            setLoadingRegister(false)
+        }).catch(_e => {
+            setLoadingRegister(false)
+        })
     }
     
 
@@ -66,9 +73,9 @@ export default function LoginPage() {
                         controlValue={passwordInput}
                         controlOnChange={changePasswordInput}
                     />
-                    {loading && <p className="text-xs my-3">Mendaftarkan akun anda...</p>}
+                    {loadingRegister && <p className="text-xs my-3">Mendaftarkan akun anda...</p>}
                     {error && <p className="text-xs my-3 text-red-500">Gagal mendaftarkan akun anda. Silahkan coba lagi.</p>}
-                    <PrimaryButton label="Daftar" onClick={handleOnPressRegister} type="button" className="mt-5" loading={true} /> 
+                    <PrimaryButton label="Daftar" onClick={handleOnPressRegister} type="button" className="mt-5" loading={loadingRegister} /> 
                 </div>
             </div>
         </div>
