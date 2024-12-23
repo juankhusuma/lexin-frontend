@@ -1,52 +1,34 @@
-name: Deploy to Cloud Run (staging)
+name: Deploy to Cloud Run
 
 on:
   push:
     branches:
-      - staging
-  pull_request:
-    branches:
-      - staging
+      - staging  # Trigger deployment when pushing to the main branch
 
 jobs:
   deploy:
-    name: Deploy to Cloud Run
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Google Cloud SDK
-      - name: Set up Google Cloud SDK
+      - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          version: 'latest'
+          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          project_id: lexin-ta
 
-      # Authenticate Docker to Artifact Registry
-      - name: Authenticate Docker with Artifact Registry
+      - name: Build and push Docker image to Container Registry
         run: |
-          gcloud auth configure-docker us-docker.pkg.dev --quiet
+          gcloud builds submit --tag gcr.io/lexin-ta/lexin-frontend
 
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/lexin-frontend/lexin-frontend:$GITHUB_SHA .
-
-      # Push the Docker image to Artifact Registry
-      - name: Push Docker image to Artifact Registry
-        run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lexin-frontend:$GITHUB_SHA
-
-      # Deploy to Cloud Run
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy lexin-frontend \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/lexin-frontend:$GITHUB_SHA \
-          --region asia-southeast2 \
-          --platform managed \
-          --allow-unauthenticated \
-          --set-env-vars NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=${{ secrets.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL }}
+            --image gcr.io/lexin-ta/lexin-frontend \
+            --region asia-southeast2 \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
