@@ -8,13 +8,15 @@ interface SearchResultCardProps {
     description: string,
     releaseDate: string
     type: string,
-    status?: string
+    status?: string,
+    number: string,
+    year: number
 }
-export default function SearchResultCard({id, title, subtitle, description, releaseDate, type, status}: SearchResultCardProps) {
+export default function SearchResultCard({id, title, subtitle, description, releaseDate, type, status, number, year}: SearchResultCardProps) {
     
     return (
         <div className="my-7 mx-3">
-            <a href={`/legal-doc/${id}`} className="text-lg text-dark-navy-blue font-bold">
+            <a href={`/legal-doc/${type.toLocaleLowerCase()}-nomor-${number}-tahun-${year}`} className="text-lg text-dark-navy-blue font-bold">
                 {title}
             </a>
             <h3 className="">

@@ -42,14 +42,11 @@ export default function Navbar() {
     return (
       <nav className="w-screen bg-dark-navy-blue h-16 fixed z-50">
         <div className={`flex flex-row justify-between items-center h-full px-16`}>
-          {showLexinLogo 
-          ?
+        
           <Link href="/search">
             <LexinLogo /> 
           </Link>
 
-          : <div />
-          }
           {inSearchResultPage && 
             <div 
               onKeyDown={e => {

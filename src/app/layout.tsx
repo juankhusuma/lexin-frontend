@@ -10,6 +10,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { getCookie, setCookie } from "cookies-next";
 import UserDataResponseType from "@/networks/response-type/UserDataResponseType";
 import { AuthProvider } from "@/contexts/authContext";
+import Footer from "@/components/layout/Footer";
+import { Poppins } from "next/font/google"
+
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+});
 
 export default function RootLayout({
   children,
@@ -22,11 +29,11 @@ export default function RootLayout({
 
   useEffect(() => {
     async function handleVerifyToken() {
-      const getAccessToken = getCookie('access_token') 
-    
+      const getAccessToken = getCookie('access_token')
+
       if (!getCookie('user_data') && getAccessToken) {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL}/api/v1/user/me`, 
+          `${process.env.NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL}/api/v1/user/me`,
           {
             method: "GET",
             headers: {
@@ -34,7 +41,7 @@ export default function RootLayout({
             },
           }
         )
-        
+
         if (response.ok) {
           const userData = await response.json() as UserDataResponseType
           setCookie('user_data', JSON.stringify(userData))
@@ -48,18 +55,19 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-        <body>
-          <AuthProvider>
-            <LexinThemeProvider>
-              <Suspense fallback={<Loading />}>
-                <Navbar />
-                <main className="bg-offwhite min-h-[calc(100vh-64px)] pt-24">
-                  {children}
-                </main>
-              </Suspense>
-            </LexinThemeProvider>
-          </AuthProvider>
-        </body>
+      <body style={poppins.style}>
+        <AuthProvider>
+          <LexinThemeProvider>
+            <Suspense fallback={<Loading />}>
+              <Navbar />
+              <main className="bg-offwhite min-h-[calc(100vh-64px)] py-24">
+                {children}
+              </main>
+              <Footer />
+            </Suspense>
+          </LexinThemeProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
