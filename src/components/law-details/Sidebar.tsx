@@ -55,7 +55,7 @@ export function Sidebar({tab, setTab, lawId} : SidebarProps) {
     const router = useRouter()
 
     return (
-        <div className="w-1/5 border-r-[0.7px] -translate-y-8 border-solid border-gray-300 h-screen fixed">
+        <div className="w-1/5 border-r-[0.7px] -translate-y-8 border-solid border-gray-300 h-screen absolute z-0]">
             <SidebarItem 
                 name="Peraturan" 
                 active={tab === "details"} 

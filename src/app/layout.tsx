@@ -55,12 +55,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body style={poppins.style}>
+      <body style={poppins.style} className="overflow-x-hidden flex flex-col min-h-screen">
         <AuthProvider>
           <LexinThemeProvider>
             <Suspense fallback={<Loading />}>
               <Navbar />
-              <main className="bg-offwhite min-h-[calc(100vh-64px)] py-24">
+              <main className="bg-offwhite pt-10 pb-32 flex-1 xl:px-32 px-8">
                 {children}
               </main>
               <Footer />

@@ -13,13 +13,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/runtime": "^7.26.0",
     "@ai-sdk/google": "^1.1.8",
+    "@babel/runtime": "^7.26.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@iconify/react": "^5.0.2",
     "@mantine/core": "^7.12.1",
     "@mantine/hooks": "^7.12.1",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-slot": "^1.1.1",
     "ai": "^4.1.16",
     "class-variance-authority": "^0.7.1",
@@ -40,6 +41,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/pdf-viewer-reactjs": "^2.2.5",
     "@types/react": "^18.3.3",

@@ -50,6 +50,7 @@ export default function LawDetailPDFView({ pdfLink } : LawDetailPDFViewProps) {
     return (
         <div>
             <iframe
+                className='relative'
                 src={pdfBlobUrl}
                 width="100%"
                 height="800px"

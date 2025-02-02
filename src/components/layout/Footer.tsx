@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Footer() {
     return (
-        <footer>
+        <footer className="z-[100] relative overflow-hidden">
             <div className="bg-[#181818] py-20 px-32 flex justify-center gap-10">
                 <div>
                     <Image src="/logo-lexin-white.png" alt="lexin" width={400} height={113} />

@@ -7,7 +7,8 @@ import ResultCount from "./ResultCount"
 import { Loader } from "@mantine/core"
 import useRequest from "@/networks/useRequest"
 import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { SearchDocumentContext } from "@/app/search/page";
 
 export interface SearchResult {
     text:        string;
@@ -30,14 +31,13 @@ export interface Metadata {
     official_of_establishment: string;
     doc_id:                    string;
     status:                    string;
+    chunk_id:                  string;
 }
 
 
 export default function DatabaseSearchResultSection({ searchQuery } : { searchQuery: string }) {
+    const { searchResults, setSearchResults, loading, setLoading } = useContext(SearchDocumentContext)
 
-    // const { data, loading } = useRequest<SearchResultResponseType>(LEGAL_DOCUMENT_ENDPOINTS.GET.searchLegalDocument(searchQuery as string))
-    const [data, setData] = useState<SearchResult[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/query`, {
             method: "POST",
@@ -47,7 +47,7 @@ export default function DatabaseSearchResultSection({ searchQuery } : { searchQu
             body: JSON.stringify({ query: searchQuery, history: [] })
         }).then(response => response.json())
         .then((response: SearchResult[]) => {
-            setData(response)
+            setSearchResults(response)
             setLoading(false)
         })
     }, [])
@@ -63,9 +63,9 @@ export default function DatabaseSearchResultSection({ searchQuery } : { searchQu
     }
 
     return (
-        <div className="flex flex-col">
-            <ResultCount count={data.length} />
-            {loading ? <Loader /> : (data ?? []).map(result => (
+        <div className="flex flex-col gap-5">
+            <ResultCount count={searchResults.length} />
+            {loading ? <Loader /> : (searchResults ?? []).map(result => (
                 <SearchResultCard 
                     key={result.metadata.doc_id}
                     number={result.metadata.number}

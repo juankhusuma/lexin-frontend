@@ -15,7 +15,7 @@ interface SearchResultCardProps {
 export default function SearchResultCard({id, title, subtitle, description, releaseDate, type, status, number, year}: SearchResultCardProps) {
     
     return (
-        <div className="my-7 mx-3">
+        <div className="py-7 px-5 rounded-md shadow-sm border">
             <a href={`/legal-doc/${type.toLocaleLowerCase()}-nomor-${number}-tahun-${year}`} className="text-lg text-dark-navy-blue font-bold">
                 {title}
             </a>
