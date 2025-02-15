@@ -1,5 +1,5 @@
 // @ts-check
-import { PHASE_DEVELOPMENT_SERVER } from 'next/constants'
+import { PHASE_DEVELOPMENT_SERVER } from 'next/dist/shared/lib/constants'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
