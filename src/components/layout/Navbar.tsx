@@ -55,7 +55,7 @@ export default function Component() {
                 <MenuIcon className="h-6 w-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
-              <Link href="/landing" className="mr-6 lg:hidden w-full flex justify-center items-center flex-1" prefetch={false}>
+              <Link href="/" className="mr-6 lg:hidden w-full flex justify-center items-center flex-1" prefetch={false}>
                 <Image src="/logo-lexin.png" alt="lexin" width={300} height={80} />
               </Link>
             </div>
@@ -78,7 +78,7 @@ export default function Component() {
           </SheetContent>
         </Sheet>
         <div className="relative flex-1">
-          <Link href="/landing" className="hidden lg:flex xl:ml-32 ml-8" prefetch={false}>
+          <Link href="/" className="hidden lg:flex xl:ml-32 ml-8" prefetch={false}>
             <Image src="/logo-lexin.png" alt="lexin" width={400} height={113} />
           </Link>
         </div>
