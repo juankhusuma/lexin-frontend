@@ -11,6 +11,7 @@ export default (phase) => {
     /** @type {import('next').NextConfig} */
     const config = {
         assetPrefix: DEV ? undefined : 'https://lexin.cs.ui.ac.id/chat/',
+        basePath: DEV ? undefined : '/chat',
     }
 
     return { ...nextConfig, ...config }
