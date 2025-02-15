@@ -8,7 +8,7 @@ import { Loader } from "@mantine/core"
 import useRequest from "@/networks/useRequest"
 import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
 import { useContext, useEffect, useState } from "react"
-import { SearchDocumentContext } from "@/app/search/page";
+import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
 
 export interface SearchResult {
     text:        string;

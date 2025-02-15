@@ -2,7 +2,7 @@ import { useContext } from "react"
 import AIAnswerSection from "./AIAnswerSection"
 import DatabaseSearchResultSection from "./DatabaseSearchResultSection"
 import { Divider } from "@mantine/core"
-import { SearchDocumentContext } from "@/app/search/page"
+import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider"
 
 interface SearchResultPageProps {
     searchQuery: string

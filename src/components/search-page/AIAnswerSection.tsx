@@ -7,9 +7,9 @@ import ReactLoading from "react-loading";
 import { useAuth } from "@/contexts/authContext";
 
 import { experimental_useObject as useObject } from 'ai/react';
-import { answerSchema } from "@/app/api/v1/ask/route";
+import { answerSchema } from "@/types/prompt/answerSchema";
 import { SearchResult } from "./DatabaseSearchResultSection";
-import { SearchDocumentContext } from "@/app/search/page";
+import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
 import { object, set } from "zod";
 
 interface AnswerResponse {
