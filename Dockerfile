@@ -18,6 +18,7 @@ RUN pnpm fetch
 
 # Copy the application files
 COPY . .
+COPY /public /app/backups/public
 
 # Install dependencies
 RUN pnpm install
