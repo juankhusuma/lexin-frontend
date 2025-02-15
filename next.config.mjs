@@ -5,6 +5,9 @@ import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 const nextConfig = {
     reactStrictMode: false,
     trailingSlash: false,
+    images: {
+        unoptimized: true,
+    }
 };
 
 export default (phase) => {
