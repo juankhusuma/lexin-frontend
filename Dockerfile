@@ -3,6 +3,8 @@ FROM node:18-alpine
 
 # Set environment variables
 ENV NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
 
 # Create and set the working directory
 WORKDIR /app
