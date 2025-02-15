@@ -5,7 +5,7 @@ import { text } from 'stream/consumers';
 import { number, z } from 'zod';
 
 export const answerSchema = z.object({
-    answer: z.string().describe("Jawaban dari pertanyaan, berikan <cite>{i}</cite> untuk hasil sitasi dengan i adalah index dari array pada structured_outputs source"),
+    answer: z.string().describe("Jawaban dari pertanyaan, berikan <cite>{i}</cite> untuk hasil sitasi dengan i adalah id dari dokumen yang relevan"),
     source: z.array(z.object({
         title: z.string().describe("Judul dari sumber"),
         text: z.string().describe("Konten dari sitasi, pastikan untuk memperbaiki seluruh kesalahan ketik, error dari hasil ekstraksi teks dan kesalahan tanda baca lainya"),
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   
     const result = streamObject({
       model,
-      temperature: 0.5,
+      temperature: 0.7,
       schema: answerSchema,
       system: `
       Anda adalah sebuah asisten virtual dalam search engine undang-undang.
@@ -39,7 +39,8 @@ export async function POST(req: Request) {
         - Hasil jawaban harus sesuai dengan schema yang diberikan
         - Anda akan memberikan informasi dan sitasi dari sumber yang relevan
 
-        berikan <cite>{i}</cite> untuk hasil sitasi dengan i adalah index dari array pada structured_outputs source
+        berikan <cite>{i}</cite> untuk hasil sitasi dengan i adalah id dari dokumen yang relevan
+        PASTIKAN ID ADA DARI KONTEKS YANG DIBERIKAN JIKA ANDA MENGGUNAKAN SITASI YANG SALAH MAKA SAYA BISA DIKENAI SANKSI
         misal anda memiliki structured_outputs sebagai berikut:
         structured_outputs: [
             {
