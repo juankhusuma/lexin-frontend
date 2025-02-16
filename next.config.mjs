@@ -5,18 +5,20 @@ import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 const nextConfig = {
     reactStrictMode: false,
     trailingSlash: false,
-    images: {
-        unoptimized: true,
-    }
 };
 
 export default (phase) => {
     const DEV = phase === PHASE_DEVELOPMENT_SERVER;
     /** @type {import('next').NextConfig} */
     const config = {
-        assetPrefix: DEV ? undefined : 'https://lexin.cs.ui.ac.id/chat/app',
         basePath: DEV ? undefined : '/chat/app',
     }
+    const loader = DEV ? {} : {
+        images:{
+            loader:"custom",
+            loaderFile:"./img-loader.js",
+        }
+    }
 
-    return { ...nextConfig, ...config }
+    return { ...nextConfig, ...config, ...loader }
 }
