@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 interface TrendingCardProps {
@@ -13,7 +14,7 @@ export default function TrendingCard({label} : TrendingCardProps) {
             onClick={() => r.push(`/search?q=${encodeURIComponent(label)}`)}
         >
             <div className="flex items-center">
-                <img src="/chart-line-up.svg" width={20}/>
+                <Image src="/chart-line-up.svg" width={20} height={20} alt="icon"/>
                 <span className="ml-2 translate-y-[-2px]">
                     {label}
                 </span>

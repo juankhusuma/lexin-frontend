@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export type SidebarMenuType = 'details' | 'consolidation' | 'history' | 'law-basis' 
@@ -5,25 +6,25 @@ export type SidebarMenuType = 'details' | 'consolidation' | 'history' | 'law-bas
 
 function LawDetailsIcon() {
     return (
-        <img src="/folder-icon.svg" width={23}/>
+        <Image alt="logo" src="/folder-icon.svg" height={23} width={23}/>
     )
 }
 
 function ConsolidationIcon() {
     return (
-        <img src="/consolidation-folder.svg" width={23}/>
+        <Image alt="logo" src="/consolidation-folder.svg" height={23} width={23}/>
     )
 }
 
 function HistoryIcon() {
     return (
-        <img src="/history.svg" width={23}/>
+        <Image alt="logo" src="/history.svg" height={23} width={23}/>
     )
 }
 
 function LawBasisIcon() {
     return (
-        <img src="/law-basis.svg" width={23}/>
+        <Image alt="logo" src="/law-basis.svg" height={23} width={23}/>
     )
 }
 

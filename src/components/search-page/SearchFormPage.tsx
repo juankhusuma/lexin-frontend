@@ -2,6 +2,7 @@ import { useState } from "react";
 import BigTextField from "../inputs/BigTextField";
 import { useRouter } from "next/navigation";
 import TrendingSearchSection from "./TrendingSearchSection";
+import Image from "next/image";
 
 
 export default function SearchFormPage() {
@@ -21,7 +22,7 @@ export default function SearchFormPage() {
     return (
         <div className="flex flex-col">
             <div className="flex items-center self-center mb-12 mt-44">
-                <img src="/lexin-logo.svg" width={60} />
+                <Image src="/lexin-logo.svg" width={60} height={60} alt="logo" />
                 <h1 className="text-5xl ml-2 font-bold text-dark-navy-blue tracking-wide">
                     Lexin
                 </h1>
