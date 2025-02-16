@@ -11,6 +11,7 @@ import { answerSchema } from "@/types/prompt/answerSchema";
 import { SearchResult } from "./DatabaseSearchResultSection";
 import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
 import { object, set } from "zod";
+import Link from "next/link";
 
 interface AnswerResponse {
     question: string;
@@ -133,9 +134,9 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                     <Icon icon="icomoon-free:lab" width="50" height="50" />
                     <p className="mt-3">
                         Anda harus login untuk menggunakan AI chatbot Lexin. Klik{" "}
-                        <a className="font-semibold underline" href="/login">
+                        <Link className="font-semibold underline" href="/login">
                             disini
-                        </a>{" "}
+                        </Link>{" "}
                         untuk login.
                     </p>
                 </div>

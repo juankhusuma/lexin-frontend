@@ -1,5 +1,6 @@
 import { LawTypeBadge } from "../law-type-badges"
 import { LawStatusBadge } from "../law-status-badges"
+import Link from "next/link"
 
 interface SearchResultCardProps {
     id: string,
@@ -16,9 +17,9 @@ export default function SearchResultCard({id, title, subtitle, description, rele
     
     return (
         <div className="py-7 px-5 rounded-md shadow-sm border">
-            <a href={`/legal-doc/${type.toLocaleLowerCase()}-nomor-${number}-tahun-${year}`} className="text-lg text-dark-navy-blue font-bold">
+            <Link href={`/legal-doc/${type.toLocaleLowerCase()}-nomor-${number}-tahun-${year}`} className="text-lg text-dark-navy-blue font-bold">
                 {title}
-            </a>
+            </Link>
             <h3 className="">
                 {subtitle}
             </h3>

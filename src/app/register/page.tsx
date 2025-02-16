@@ -8,6 +8,7 @@ import RegisterResponseType from "@/networks/response-type/RegisterResponseType"
 import useRequest from "@/networks/useRequest";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function LoginPage() {
@@ -51,7 +52,7 @@ export default function LoginPage() {
                         Daftar
                     </h1>
                     <h1 className="mb-6 text-sm">
-                        Sudah memiliki akun? <a className="text-blue-600 underline font-semibold" href="/login">Masuk</a> 
+                        Sudah memiliki akun? <Link className="text-blue-600 underline font-semibold" href="/login">Masuk</Link> 
                     </h1>
                 </div>
                 <div className="w-full">
