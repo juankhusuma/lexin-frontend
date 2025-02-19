@@ -95,7 +95,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
 
     return (
         <div className="flex flex-col items-start mx-4 mt-4 mb-12 p-4 bg-light-blue rounded-xl">
-            {isLoggedIn ? (
+            {/* {isLoggedIn ? ( */}
                 <>
                     <div className="text-xs flex flex-row">
                         <div className="font-semibold mr-2">
@@ -129,7 +129,8 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                         </div>
                     </div>
                 </>
-            ) : (
+            {/* )  */}
+            {/* : (
                 <div className="flex flex-col justify-center items-center w-full py-6">
                     <Icon icon="icomoon-free:lab" width="50" height="50" />
                     <p className="mt-3">
@@ -140,7 +141,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                         untuk login.
                     </p>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }
