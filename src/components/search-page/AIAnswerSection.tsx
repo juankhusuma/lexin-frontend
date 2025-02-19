@@ -29,7 +29,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
 
     const { searchResults, loading, setSearchResults } = useContext(SearchDocumentContext)
     const { object: reply, submit, isLoading } = useObject({
-        api: process.env.NEXT_PUBLIC_LLM_API_PATH || "/api/v1/ask",
+        api: "http://lexin-chat.vercel.app/api/v1/ask",
         schema: answerSchema,
     });
 
