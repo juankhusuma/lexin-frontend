@@ -23,6 +23,8 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/chat:frontend
+          build-args: |
+            GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
       - name: Releasing New Version
         uses: appleboy/ssh-action@v1.2.0

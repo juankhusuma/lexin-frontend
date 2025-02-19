@@ -5,6 +5,7 @@ FROM node:18-alpine
 ENV NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
 ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST=https://lexin.cs.ui.ac.id/chat/api/v1
 ENV NEXT_PUBLIC_LLM_API_PATH=/chat/app/api/v1/ask
+ENV GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
