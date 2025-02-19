@@ -12,6 +12,7 @@ import { SearchResult } from "./DatabaseSearchResultSection";
 import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
 import { object, set } from "zod";
 import Link from "next/link";
+import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 
 interface AnswerResponse {
     question: string;
@@ -28,7 +29,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
 
     const { searchResults, loading, setSearchResults } = useContext(SearchDocumentContext)
     const { object: reply, submit, isLoading } = useObject({
-        api: '/api/v1/ask',
+        api: process.env.NEXT_PUBLIC_LLM_API_PATH || "/api/v1/ask",
         schema: answerSchema,
     });
 
