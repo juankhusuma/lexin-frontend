@@ -8,6 +8,11 @@ ENV NEXT_PUBLIC_LLM_API_PATH=/chat/app/api/v1/ask
 ENV GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
+ENV HTTP_PROXY="http://proxy.cs.ui.ac.id:8080"
+ENV http_proxy="http://proxy.cs.ui.ac.id:8080"
+ENV HTTPS_PROXY="http://proxy.cs.ui.ac.id:8080"
+ENV https_proxy="http://proxy.cs.ui.ac.id:8080"
+
 
 # Create and set the working directory
 WORKDIR /app
