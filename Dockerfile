@@ -3,7 +3,7 @@ FROM node:18-alpine
 
 # Set environment variables
 ENV NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
-ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST=http://retriever:5000
+ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST=https://lexin.cs.ui.ac.id/chat/api/v1
 ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
