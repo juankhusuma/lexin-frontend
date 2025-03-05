@@ -7,59 +7,51 @@ import ResultCount from "./ResultCount"
 import { Loader } from "@mantine/core"
 import useRequest from "@/networks/useRequest"
 import { LEGAL_DOCUMENT_ENDPOINTS } from "@/networks/endpoints"
-import { useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
 
 export interface SearchResult {
-    text:        string;
-    page_number: number;
-    doc_title:   string;
-    source:      string;
-    similiarity: number;
-    metadata:    Metadata;
+    document_id:                           string;
+    title:                                 string;
+    jenis_bentuk_peraturan:                string;
+    pemrakarsa:                            string;
+    nomor:                                 string;
+    tahun:                                 number;
+    tentang:                               string;
+    tempat_penetapan:                      string;
+    ditetapkan_tanggal:                    string | null;
+    pejabat_yang_menetapkan:               string;
+    status:                                string;
+    url:                                   string;
+    dasar_hukum:                           DocRef[] | null;
+    mengubah:                              DocRef[] | null;
+    diubah_oleh:                           DocRef[] | null;
+    mencabut:                              DocRef[] | null;
+    dicabut_oleh:                          DocRef[] | null;
+    melaksanakan_amanat_peraturan:         DocRef[] | null;
+    dilaksanakan_oleh_peraturan_pelaksana: DocRef[] | null;
+    page_number:                           number;
+    combined_body:                         string;
 }
 
-export interface Metadata {
-    last_modified:             Date;
-    type:                      string;
-    initiator:                 string;
-    number:                    string;
-    year:                      number;
-    about:                     string;
-    place_of_establisment:     string;
-    date_of_establishment:     null;
-    official_of_establishment: string;
-    doc_id:                    string;
-    status:                    string;
-    chunk_id:                  string;
+export interface DocRef {
+    ref:  null | string;
+    url:  null | string;
+    text: string;
 }
+
 
 
 export default function DatabaseSearchResultSection({ searchQuery } : { searchQuery: string }) {
-    const { searchResults, setSearchResults, loading, setLoading } = useContext(SearchDocumentContext)
+    const { searchResults, setSearchResults, loading, setLoading, setStatus } = useContext(SearchDocumentContext)
 
-    useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/query`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ query: searchQuery, history: [] })
-        }).then(response => response.json())
-        .then((response: SearchResult[]) => {
-            setSearchResults(response)
-            setLoading(false)
-        })
-    }, [])
+      useEffect(() => {
+        
+      }, [])
 
-
-    const toLocaleDate = (date: Date | null) => {
+    const toLocaleDate = (date: string | null) => {
         if (!date) return 'Tidak diketahui'
-        return date.toLocaleDateString('id-ID', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        })
+        return new Date(date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
     }
 
     return (
@@ -67,16 +59,16 @@ export default function DatabaseSearchResultSection({ searchQuery } : { searchQu
             <ResultCount count={searchResults.length} />
             {loading ? <Loader /> : (searchResults ?? []).map(result => (
                 <SearchResultCard 
-                    key={result.metadata.doc_id}
-                    number={result.metadata.number}
-                    year={result.metadata.year}
-                    id={result.metadata.doc_id}
-                    title={result.doc_title}
-                    subtitle={result.metadata.about}
-                    description={result.metadata.initiator}
-                    releaseDate={toLocaleDate(result.metadata.date_of_establishment)}
-                    type={result.metadata.type}
-                    status={result.metadata.status}
+                    key={result.document_id}
+                    number={result.nomor}
+                    year={result.tahun}
+                    id={result.document_id}
+                    title={result.title}
+                    subtitle={result.pemrakarsa}
+                    description={result.pejabat_yang_menetapkan}
+                    releaseDate={toLocaleDate(result.ditetapkan_tanggal!)}
+                    type={result.jenis_bentuk_peraturan}
+                    status={result.status}
                 />
             ))}
         </div>

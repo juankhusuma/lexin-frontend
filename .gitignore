@@ -40,3 +40,5 @@ manual-deploy-to-cloud-run.sh
 
 .idea
 .env
+# Sentry Config File
+.env.sentry-build-plugin

@@ -60,7 +60,7 @@ export default function RootLayout({
           <LexinThemeProvider>
             <Suspense fallback={<Loading />}>
               <Navbar />
-              <main className="bg-offwhite pt-10 pb-32 flex-1 xl:px-32 px-8">
+              <main className="bg-offwhite pb-32 flex-1">
                 {children}
               </main>
               <Footer />

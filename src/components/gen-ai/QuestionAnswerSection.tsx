@@ -52,9 +52,12 @@ function FeedbackButtons({ answer }: { answer: string }) {
 
 interface QuestionAnswerSectionProps {
     question: string
-    answer: string
+    answer: {
+        document_id: string;
+        answer: string;
+        page_number: number;
+    }[]
     showUserFeedbackButtons?: boolean
-    relevant_docs: RelevantDocs[]
 }
 
 
@@ -72,7 +75,6 @@ export default function QuestionAnswerSection({
     question,
     answer,
     showUserFeedbackButtons,
-    relevant_docs
 }: QuestionAnswerSectionProps) {
 
     const getShowUserFeedbackButtons = showUserFeedbackButtons ?? true
@@ -81,13 +83,13 @@ export default function QuestionAnswerSection({
     return (
         <>
             <UserChatBox message={question} />
-            <AIAnswer message={answer} urls={relevant_docs.map(doc => `/legal-doc/undang-undang-nomor-${doc.number}-tahun-${doc.year}`)} />
-            {getShowUserFeedbackButtons && <FeedbackButtons answer={answer} />}
+            <AIAnswer answer={answer} />
+            {getShowUserFeedbackButtons && <FeedbackButtons answer={answer.map(a => a.answer).join("\n")} />}
             <div className="flex items-center gap-1 w-full mt-5 px-3">
                 <p className="text-[#223d71] font-bold">Sumber Terkait</p>
                 <div className="bg-[#d61b23] rounded-full flex-1 h-[2px]" />
             </div>
-            <div className="flex overflow-auto max-w-full gap-5 py-3">
+            {/* <div className="flex overflow-auto max-w-full gap-5 py-3">
                 {relevant_docs.map((doc, index) => (
                     <Link href={`/legal-doc/undang-undang-nomor-${doc.number}-tahun-${doc.year}`}>
                         <div key={index} className="flex-1 min-w-80 p-3 rounded-md border border-blue-100 shadow-sm">
@@ -100,7 +102,7 @@ export default function QuestionAnswerSection({
                         </div>
                     </Link>
                 ))}
-            </div>
+            </div> */}
         </>
     )
 }
