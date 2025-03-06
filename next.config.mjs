@@ -8,6 +8,14 @@ export default (phase) => {
     /** @type {import('next').NextConfig} */
     const config = {
         basePath: DEV ? undefined : '/chat/app',
+        async rewrites() {
+          return [
+            {
+              source: '/rag/:path*',
+              destination: `${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_SERVER}/:path*` // Proxy to Backend
+            }
+          ]
+        }
     }
     const loader = DEV ? {} : {
         images:{

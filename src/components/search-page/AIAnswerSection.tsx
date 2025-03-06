@@ -79,7 +79,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     useEffect(() => {
         if (!isMetapromptLoading) {
             setRetrievalLoading(true)
-            if (!metaprompt?.need_retrieval && !isMetapromptLoading) {
+            if (!metaprompt?.need_retrieval && isMetapromptLoading) {
                 setRetrievalLoading(false)
                 setStatus("Proses pencarian selesai, mulai menjawab pertanyaan")
                 setSearchResults([])
@@ -111,6 +111,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                             lines.forEach(line => {
                                 const lineSplit = line.split(';');
                                 if (lineSplit.length > 2 && lineSplit[0] === "done") {
+                                    console.log(lineSplit)
                                     // join all data from the 2nd index up to the last index
                                     const data = lineSplit.slice(2).join(';')
                                     setRetrievalLoading(false)
