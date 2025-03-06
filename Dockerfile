@@ -5,7 +5,7 @@ FROM node:18-alpine
 ENV NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
 ENV NEXT_PUBLIC_LLM_API_PATH=https://lexin-chat.vercel.app/api/v1
 ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST=https://lexin.cs.ui.ac.id/chat/app/rag
-ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_SERVER=http://localhost:5000
+ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_SERVER=http://retriever:5000
 
 # Create and set the working directory
 WORKDIR /app
@@ -19,6 +19,12 @@ RUN pnpm fetch
 
 # Copy the application files
 COPY . .
+ENV http_proxy=''
+ENV https_proxy=''
+ENV HTTP_PROXY=''
+ENV HTTPS_PROXY=''
+ENV no_proxy='*'
+ENV NO_PROXY='*'
 
 # Install dependencies
 RUN pnpm install
