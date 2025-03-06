@@ -4,7 +4,7 @@ FROM node:18-alpine
 # Set environment variables
 ENV NEXT_PUBLIC_BACKEND_SERVICE_BASE_URL=https://backend-dot-lexin-ta.et.r.appspot.com
 ENV NEXT_PUBLIC_LLM_API_PATH=https://lexin-chat.vercel.app/api/v1
-ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST=/rag
+ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST=/chat/app/rag
 ENV NEXT_PUBLIC_SEMANTIC_SEARCH_API_SERVER=http://retriever:5000
 
 # Create and set the working directory
