@@ -8,11 +8,14 @@ export default (phase) => {
     /** @type {import('next').NextConfig} */
     const config = {
         basePath: DEV ? undefined : '/chat/app',
+        experimental: {
+          proxyTimeout: 1000 * 60 * 5,
+        },
         async rewrites() {
           return [
             {
               source: '/rag/:path*',
-              destination: `${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_SERVER}/:path*` // Proxy to Backend
+              destination: `${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_SERVER}/:path*`, // Proxy to Backend
             }
           ]
         }
