@@ -43,11 +43,18 @@ export interface DocRef {
 
 
 export default function DatabaseSearchResultSection({ searchQuery } : { searchQuery: string }) {
-    const { searchResults, setSearchResults, loading, setLoading, setStatus } = useContext(SearchDocumentContext)
+    const { searchResults, loading } = useContext(SearchDocumentContext)
+    const [dedupedResults, setDedupedResults] = useState<SearchResult[]>([])
 
       useEffect(() => {
-        
-      }, [])
+        const set = new Set<string>()
+        const deduped = searchResults.filter(result => {
+            if (set.has(result.document_id)) return false
+            set.add(result.document_id)
+            return true
+        })
+        setDedupedResults(deduped)
+      }, [searchResults])
 
     const toLocaleDate = (date: string | null) => {
         if (!date) return 'Tidak diketahui'
@@ -56,8 +63,8 @@ export default function DatabaseSearchResultSection({ searchQuery } : { searchQu
 
     return (
         <div className="flex flex-col gap-5">
-            <ResultCount count={searchResults.length} />
-            {loading ? <Loader /> : (searchResults ?? []).map(result => (
+            <ResultCount count={dedupedResults.length} />
+            {loading ? <Loader /> : (dedupedResults ?? []).map(result => (
                 <SearchResultCard 
                     key={result.document_id}
                     number={result.nomor}

@@ -14,6 +14,7 @@ import { object, set } from "zod";
 import Link from "next/link";
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 import { metapromptSchema } from "@/types/prompt/metapromptSchema";
+import { TooltipProvider } from "../ui/tooltip";
 
 interface AnswerResponse {
     question: string;
@@ -62,28 +63,29 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     }, [reply, chatIndex])
 
     useEffect(() => {
-        if (!retrievalLoading) {
+        if (!retrievalLoading && !isMetapromptLoading) {
             submit({
                 question,
-                relevant_docs: searchResults
+                relevant_docs: searchResults,
+                conversation: chat.map(qna => ({ question: qna.question, answer: qna.answer.map(ans => ans.answer).join("\n") })),
             })
-            setChat([...chat, { question, answer: [] }])
+            setIsFirstQuestionSubmitted(true)
             console.log(question)
             setChatIndex(chatIndex + 1)
             setIsFirstQuestionSubmitted(true)
         }
-    }, [retrievalLoading, question])
+    }, [retrievalLoading, isMetapromptLoading, question])
 
     useEffect(() => {
         if (!isMetapromptLoading) {
             setRetrievalLoading(true)
-            if (!metaprompt?.need_retrieval) {
+            if (!metaprompt?.need_retrieval && !isMetapromptLoading) {
                 setRetrievalLoading(false)
                 setStatus("Proses pencarian selesai, mulai menjawab pertanyaan")
                 setSearchResults([])
                 return;
             }
-            fetch('http://localhost:8000/query', {
+            fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/query`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -128,20 +130,66 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     }, [isMetapromptLoading])
 
     function sendQuestion(question: string) {
+        setQuestion(question)
+        setChat([...chat, { question, answer: [] }])
         submitMetaprompt({
-            query: question,
+            query: `
+            ${question}
+
+            <previous_question>
+            ${chat.map((qna, index) => (
+                `
+                    <question>${qna.question}</question>
+                    <answer>${qna.answer.map(ans => ans.answer).join("\n")}</answer>
+                `
+                ))}
+            </previous_question>
+            <latestsearch>
+            ${searchResults.map(doc => (
+                `
+                <sumber>
+                    <id>${doc.document_id}</id>
+                    <jenis_bentuk_peraturan>${doc.jenis_bentuk_peraturan}</jenis_bentuk_peraturan>
+                    <pemrakarsa>${doc.pemrakarsa}</pemrakarsa>
+                    <nomor>${doc.nomor}</nomor>
+                    <tahun>${doc.tahun}</tahun>
+                    <tentang>${doc.tentang}</tentang>
+                    <tempat_penetapan>${doc.tempat_penetapan}</tempat_penetapan>
+                    <ditetapkan_tanggal>${doc.ditetapkan_tanggal}</ditetapkan_tanggal>
+                    <pejabat_yang_menetapkan>${doc.pejabat_yang_menetapkan}</pejabat_yang_menetapkan>
+                    <status>${doc.status}</status>
+                    <url>${doc.url}</url>
+                    ${doc.dasar_hukum ? `<dasar_hukum>${doc.dasar_hukum.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</dasar_hukum>` : ''}
+                    ${doc.mengubah ? `<mengubah>${doc.mengubah.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</mengubah>` : ''}
+                    ${doc.diubah_oleh ? `<diubah_oleh>${doc.diubah_oleh.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</diubah_oleh>` : ''}
+                    ${doc.mencabut ? `<mencabut>${doc.mencabut.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</mencabut>` : ''}
+                    ${doc.dicabut_oleh ? `<dicabut_oleh>${doc.dicabut_oleh.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</dicabut_oleh>` : ''}
+                    ${doc.melaksanakan_amanat_peraturan ? `<melaksanakan_amanat_peraturan>${doc.melaksanakan_amanat_peraturan.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</melaksanakan_amanat_peraturan>` : ''}
+                    ${doc.dilaksanakan_oleh_peraturan_pelaksana ? `<dilaksanakan_oleh_peraturan_pelaksana>${doc.dilaksanakan_oleh_peraturan_pelaksana.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</dilaksanakan_oleh_peraturan_pelaksana>` : ''}
+                    <page_number>${doc.page_number}</page_number>
+                    <combined_body>${doc.combined_body}</combined_body>
+                </sumber>    
+                `
+            ))}
+            </latestsearch>
+            `,
         })
     }
 
     useEffect(() => {
+        setRetrievalLoading(true)
+        if (isFirstQuestionSubmitted) return;
+        setChat([...chat, { question, answer: [] }])
         if (!isFirstQuestionSubmitted) {
-            setIsFirstQuestionSubmitted(true)
-            sendQuestion(searchQuery)
+            submitMetaprompt({
+                query: question,
+            })
         }
     }, [])
 
     function onSubmitFollowUpQuestion() {
-        if (isLoading || !followUpInput.trim() || !isMetapromptLoading) return;
+        if (isLoading || !followUpInput.trim() || isMetapromptLoading) return;
+        setRetrievalLoading(true)
         sendQuestion(followUpInput.trim());
         setFollowUpInput("");
     }
@@ -152,17 +200,21 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
         <div className="flex flex-col items-start mx-4 mt-4 mb-12 p-4 bg-light-blue rounded-xl">
             {/* {isLoggedIn ? ( */}
             <>
-                <div className="text-xs flex flex-row">
-                    <div className="font-semibold mr-2">
-                        Lexin Chat:
-                    </div>
-                    <div>
-                        {status === "" ? "Loading..." : status}
-                    </div>
-                </div>
-                {chat.map((qna, index) => (
-                    <QuestionAnswerSection key={index} question={qna.question} answer={qna?.answer ?? []} />
-                ))}
+                <TooltipProvider>
+                    {chat.map((qna, index) => (
+                        <>
+                        <div className="text-xs flex flex-row mt-5">
+                            <div className="font-semibold mr-2">
+                                Lexin Chat:
+                            </div>
+                            <div>
+                                {status === "" ? "Loading..." : status}
+                            </div>
+                        </div>
+                        <QuestionAnswerSection key={index} question={qna.question} answer={qna?.answer ?? []} />
+                        </>
+                    ))}
+                </TooltipProvider>
                 {(retrievalLoading || isLoading || isMetapromptLoading) && <ReactLoading type="bubbles" color="#192E59" />}
                 <div className="text-white bg-dark-navy-blue px-6 py-3 rounded-xl mt-5 w-full flex justify-between items-center">
                     <input
@@ -171,7 +223,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                         placeholder="Tanyakan pertanyaan lanjutan"
                         className="text-md bg-dark-navy-blue w-[80%] focus:outline-none"
                         type="text"
-                        disabled={!isLoading || !retrievalLoading || !isFirstQuestionSubmitted || !isMetapromptLoading}
+                        disabled={isLoading || retrievalLoading || !isFirstQuestionSubmitted || isMetapromptLoading}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") onSubmitFollowUpQuestion();
                         }}
