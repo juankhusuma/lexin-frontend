@@ -5,6 +5,7 @@ import { useState } from "react"
 import copyToClipboard from "@/utils/copyToClipboard"
 import Link from "next/link"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
+import { Message } from "ai/react"
 
 function FeedbackButtons({ answer, context }: { answer: string, context: {
     document_id: string;
@@ -150,20 +151,19 @@ export interface RelevantDocs {
 }
 
 
-export default function QuestionAnswerSection({
-    question,
-    answer,
-    showUserFeedbackButtons,
-}: QuestionAnswerSectionProps) {
+// export default function QuestionAnswerSection({
+//     message,
+//     showUserFeedbackButtons,
+// }: QuestionAnswerSectionProps) {
 
-    const getShowUserFeedbackButtons = showUserFeedbackButtons ?? true
+//     const getShowUserFeedbackButtons = showUserFeedbackButtons ?? true
 
 
-    return (
-        <>
-            <UserChatBox message={question} />
-            <AIAnswer answer={answer} />
-            {getShowUserFeedbackButtons && <FeedbackButtons answer={answer.map(a => a.answer).join("\n")} context={answer} />}
-        </>
-    )
-}
+//     return (
+//         <>
+//             <UserChatBox message={question} />
+//             <AIAnswer answer={answer} />
+//             {getShowUserFeedbackButtons && <FeedbackButtons answer={answer.map(a => a.answer).join("\n")} context={answer} />}
+//         </>
+//     )
+// }

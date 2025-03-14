@@ -7,7 +7,6 @@ export default (phase) => {
     const DEV = phase === PHASE_DEVELOPMENT_SERVER;
     /** @type {import('next').NextConfig} */
     const config = {
-        basePath: DEV ? undefined : '/chat/app',
         experimental: {
           proxyTimeout: 1000 * 60 * 5,
         },
@@ -20,19 +19,12 @@ export default (phase) => {
           ]
         }
     }
-    const loader = DEV ? {} : {
-        images:{
-            loader:"custom",
-            loaderFile:"./img-loader.js",
-        }
-    }
 
     return withSentryConfig(
         {
             reactStrictMode: false,
             trailingSlash: false,
             ...config,
-            ...loader,
         },
         {
           // For all available options, see:
