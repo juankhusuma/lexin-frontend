@@ -19,12 +19,6 @@ RUN pnpm fetch
 
 # Copy the application files
 COPY . .
-ENV http_proxy=''
-ENV https_proxy=''
-ENV HTTP_PROXY=''
-ENV HTTPS_PROXY=''
-ENV no_proxy='*'
-ENV NO_PROXY='*'
 
 # Install dependencies
 RUN pnpm install
