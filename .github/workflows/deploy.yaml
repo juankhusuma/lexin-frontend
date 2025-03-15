@@ -18,16 +18,16 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Building Next App
+      - name: Setting up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
       
       - name: Install Dependencies
-        run: npm install
+        run: npm i -g pnpm && pnpm install
 
       - name: Build Next App
-        run: npm run build
+        run: echo '${{ secrets.ENV_FILE }}' > .env && pnpm run build
 
       - name: Archive Next App
         run: zip -r next.zip .next
