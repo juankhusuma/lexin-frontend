@@ -33,7 +33,7 @@ jobs:
         run: zip -r next.zip .next
 
       - name: Sending Next App to Production
-        uses: appleboy/scp-action@v1
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST_IP }}
           username: ${{ secrets.SSH_HOST_USER }}
