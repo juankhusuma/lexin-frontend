@@ -22,11 +22,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-        run: |
-          npm i -g pnpm
-          pnpm install
-          pnpm build
-          zip -r next.zip .next
+      
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Next App
+        run: npm run build
+
+      - name: Archive Next App
+        run: zip -r next.zip .next
 
       - name: Sending Next App to Production
         uses: appleboy/scp-action@v1
