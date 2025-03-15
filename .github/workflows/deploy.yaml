@@ -30,7 +30,7 @@ jobs:
         run: echo '${{ secrets.ENV_FILE }}' > .env && pnpm run build
 
       - name: Archive Next App
-        run: zip -r next.zip .next
+        run: zip -r frontend-build.zip .
 
       - name: Sending Next App to Production
         uses: appleboy/scp-action@v0.1.7
@@ -44,8 +44,8 @@ jobs:
           proxy_key: ${{ secrets.SSH_JUMP_HOST_KEY }}
           proxy_port: ${{ secrets.SSH_JUMP_HOST_PORT }}
           proxy_passphrase: ${{ secrets.SSH_JUMP_HOST_PASSPHRASE }}
-          source: next.zip
-          target: ~/next.zip
+          source: frontend-build.zip
+          target: ~/frontend-build.zip
 
       - name: Releasing New Version
         uses: appleboy/ssh-action@v1.2.0
@@ -60,6 +60,4 @@ jobs:
           proxy_port: ${{ secrets.SSH_JUMP_HOST_PORT }}
           proxy_passphrase: ${{ secrets.SSH_JUMP_HOST_PASSPHRASE }}
           script: |
-            unzip -o ~/next.zip -d ~/next
-            rm ~/next.zip
-            sudo systemctl restart next
+            unzip -o frontend-build.zip -d lexin-frontend
