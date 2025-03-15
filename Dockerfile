@@ -12,6 +12,7 @@ WORKDIR /app
 
 # Install pnpm globally
 RUN npm install -g pnpm
+RUN pnpm add global-agent
 
 # Copy the package manager files and install dependencies
 COPY pnpm-lock.yaml ./
@@ -28,6 +29,8 @@ RUN pnpm build
 
 # Expose the port the app runs on
 EXPOSE 3000
-
+ENV GLOBAL_AGENT_HTTP_PROXY=http://proxy.cs.ui.ac.id:8080
+ENV GLOBAL_AGENT_HTTPS_PROXY=http://proxy.cs.ui.ac.id:8080
 # Start the Next.js application
-CMD ["pnpm", "start"]
+
+CMD ["node", "-r", "global-agent/bootstrap", "node_modules/next/dist/bin/next", "start", "-p", "3000"]
