@@ -18,34 +18,13 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Setting up Node.js
-        uses: actions/setup-node@v4
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
         with:
-          node-version: '18'
-      
-      - name: Install Dependencies
-        run: npm i -g pnpm && pnpm install
-
-      - name: Build Next App
-        run: echo '${{ secrets.ENV_FILE }}' > .env && pnpm run build
-
-      - name: Archive Next App
-        run: zip -r frontend-build.zip .
-
-      - name: Sending Next App to Production
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST_IP }}
-          username: ${{ secrets.SSH_HOST_USER }}
-          password: ${{ secrets.SSH_HOST_PASS }}
-          port: ${{ secrets.SSH_PORT }}
-          proxy_host: ${{ secrets.SSH_JUMP_HOST_URL }}
-          proxy_username: ${{ secrets.SSH_JUMP_HOST_USER }}
-          proxy_key: ${{ secrets.SSH_JUMP_HOST_KEY }}
-          proxy_port: ${{ secrets.SSH_JUMP_HOST_PORT }}
-          proxy_passphrase: ${{ secrets.SSH_JUMP_HOST_PASSPHRASE }}
-          source: frontend-build.zip
-          target: ~/frontend-build.zip
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/chat:frontend
+          build-args: |
+            GOOGLE_GENERATIVE_AI_API_KEY=${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
 
       - name: Releasing New Version
         uses: appleboy/ssh-action@v1.2.0
@@ -60,4 +39,6 @@ jobs:
           proxy_port: ${{ secrets.SSH_JUMP_HOST_PORT }}
           proxy_passphrase: ${{ secrets.SSH_JUMP_HOST_PASSPHRASE }}
           script: |
-            unzip -o frontend-build.zip -d lexin-frontend
+            docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/chat:frontend
+            docker compose up -d
