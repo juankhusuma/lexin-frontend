@@ -64,11 +64,16 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
 
     useEffect(() => {
         if (!retrievalLoading && !isMetapromptLoading) {
+            const conversation = chat.map(({ question, answer }) => ({
+                question,
+                answer: answer.map(({ answer }) => answer).join("\n"),
+            }));
+
             submit({
                 question,
                 relevant_docs: searchResults,
-                conversation: chat.map(qna => ({ question: qna.question, answer: qna.answer.map(ans => ans.answer).join("\n") })),
-            })
+                conversation,
+            });
             setIsFirstQuestionSubmitted(true)
             console.log(question)
             setChatIndex(chatIndex + 1)
@@ -77,56 +82,55 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     }, [retrievalLoading, isMetapromptLoading, question])
 
     useEffect(() => {
-        if (!isMetapromptLoading) {
-            setRetrievalLoading(true)
-            if (!metaprompt?.need_retrieval && !isMetapromptLoading) {
-                setRetrievalLoading(false)
-                setStatus("Proses pencarian selesai, mulai menjawab pertanyaan")
-                setSearchResults([])
-                return;
-            }
-            fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/query`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    vsm_query: metaprompt?.vector_query,
-                    fts_query: metaprompt?.fts_query,
-                    berlaku_only: metaprompt?.berlaku_only,
-                    tidak_berlaku_only: metaprompt?.tidak_berlaku_only,
-                })
-            })
-                .then(response => {
-                    const reader = response!.body!.getReader();
-                    const decoder = new TextDecoder();
-                    let buffer = '';
-    
-                    function read() {
-                        reader.read().then(({ done, value }) => {
-                            if (done) return;
-                            buffer += decoder.decode(value, { stream: true });
-                            const lines = buffer.split('\n');
-                            buffer = lines.pop()!; // Keep incomplete line
-                            lines.forEach(line => {
-                                const lineSplit = line.split(';');
-                                if (lineSplit.length > 2 && lineSplit[0] === "done") {
-                                    // join all data from the 2nd index up to the last index
-                                    const data = lineSplit.slice(2).join(';')
-                                    setRetrievalLoading(false)
-                                    setStatus("Proses pencarian selesai, mulai menjawab pertanyaan")
-                                    setSearchResults(JSON.parse(data))
-                                } else {
-                                    setStatus(lineSplit[1])
-                                }
-                            });
-                            read();
-                        });
-                    }
-                    read();
+        (async () => {
+            if (!isMetapromptLoading) {
+                setRetrievalLoading(true)
+                if (!metaprompt?.need_retrieval && !isMetapromptLoading) {
+                    setRetrievalLoading(false)
+                    setStatus("Proses pencarian selesai, mulai menjawab pertanyaan")
+                    setSearchResults([])
+                    return;
+                }
+                const embedResponse = await fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/embed`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: metaprompt?.vector_query,
+                    })
                 });
-            setQuestion(question)
-        }
+                const results = await Promise.all([
+                    fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/semantic`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            query: await embedResponse.json(),
+                            berlaku_only: metaprompt?.berlaku_only,
+                            tidak_berlaku_only: metaprompt?.tidak_berlaku_only,
+                        })
+                    }),
+                    fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/fulltext`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            query: await metaprompt?.fts_query,
+                            berlaku_only: metaprompt?.berlaku_only,
+                            tidak_berlaku_only: metaprompt?.tidak_berlaku_only,
+                        })
+                    }),
+                ])
+                const data = await Promise.all(results.map(async res => await res.json()))
+                console.log(data)
+                setSearchResults([...data[0], ...data[1]])
+                setRetrievalLoading(false)
+                setQuestion(question)
+            }
+        })();
     }, [isMetapromptLoading])
 
     function sendQuestion(question: string) {
