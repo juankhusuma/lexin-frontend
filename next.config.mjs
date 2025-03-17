@@ -4,24 +4,10 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 
 export default (phase) => {
-    const DEV = phase === PHASE_DEVELOPMENT_SERVER;
-    /** @type {import('next').NextConfig} */
-    const config = {
-        basePath: DEV ? undefined : '/chat/app',
-    }
-    const loader = DEV ? {} : {
-        images:{
-            loader:"custom",
-            loaderFile:"./img-loader.js",
-        }
-    }
-
     return withSentryConfig(
         {
             reactStrictMode: false,
             trailingSlash: false,
-            ...config,
-            ...loader,
         },
         {
           // For all available options, see:
