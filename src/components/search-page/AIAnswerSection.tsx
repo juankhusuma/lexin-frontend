@@ -124,9 +124,33 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                         })
                     }),
                 ])
-                const data = await Promise.all(results.map(async res => await res.json()))
-                console.log(data)
-                setSearchResults([...data[0], ...data[1]])
+                const pagesData = await Promise.all(results.map(async res => res.json()))
+                const pages = pagesData.flat()
+                var docPageSet = new Set()
+                const uniquePages = pages.filter((page) => {
+                    if (docPageSet.has(`${page.document_id}-${page.page_number}`)) {
+                        return false
+                    }
+                    docPageSet.add(`${page.document_id}-${page.page_number}`)
+                    return true
+                })
+                const expandedPages = (await Promise.all(uniquePages.map(async page => {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/page/${page.document_id}/${page.page_number}`)
+                    return res.json()
+                }))).flat()
+                console.log(expandedPages)
+
+                // deduplicate
+                docPageSet = new Set()
+                const uniqueExpandedPages = expandedPages.filter((page) => {
+                    if (docPageSet.has(`${page.document_id}-${page.page_number}`)) {
+                        return false
+                    }
+                    docPageSet.add(`${page.document_id}-${page.page_number}`)
+                    return true
+                })
+                console.log(uniqueExpandedPages)
+                setSearchResults(uniqueExpandedPages)
                 setRetrievalLoading(false)
                 setQuestion(question)
             }
