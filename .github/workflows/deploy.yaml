@@ -39,6 +39,7 @@ jobs:
           proxy_port: ${{ secrets.SSH_JUMP_HOST_PORT }}
           proxy_passphrase: ${{ secrets.SSH_JUMP_HOST_PASSPHRASE }}
           script: |
+            docker rmi $(docker images -a -q)
             docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/chat:frontend
             docker compose up -d
