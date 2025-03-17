@@ -69,7 +69,7 @@ export default function AIAnswer({ answer }: {
                                 <AlertDialogHeader>
                                     <AlertDialogTitle className="text-center leading-snug mb-5">{result[key]?.document_title}</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        <object className="relative w-full h-[800px]" type="application/pdf" data={`https://lexin.cs.ui.ac.id/chat/static/doc/${result[key]?.document_id}#page=${result[key]?.page_number}`}></object>
+                                        <object className="relative w-full h-[800px]" type="application/pdf" data={`https://chat.lexin.cs.ui.ac.id/static/doc/${result[key]?.document_id}#page=${result[key]?.page_number}`}></object>
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
