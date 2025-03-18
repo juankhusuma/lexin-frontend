@@ -1,17 +1,12 @@
 import { Icon } from "@iconify/react/dist/iconify.js"
 import AIAnswer from "./AIAnswer"
 import UserChatBox from "./UserChatBox"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import copyToClipboard from "@/utils/copyToClipboard"
-import Link from "next/link"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
+import { AnswerResponse, AnswerResponseContext } from "../search-page/AIAnswerSection"
 
-function FeedbackButtons({ answer, context }: { answer: string, context: {
-    document_id: string;
-    answer: string;
-    page_number: number;
-    document_title: string;
-}[] }) {
+function FeedbackButtons({ answer, context }: { answer: string, context: AnswerResponse["documents"] }) {
     const [liked, setLiked] = useState<boolean>(false)
     const [disliked, setDisliked] = useState<boolean>(false)
     const [bookmarked, setBookmarked] = useState<boolean>(false)
@@ -129,14 +124,7 @@ function FeedbackButtons({ answer, context }: { answer: string, context: {
 }
 
 interface QuestionAnswerSectionProps {
-    question: string
-    answer: {
-        document_id: string;
-        answer: string;
-        page_number: number;
-        document_title: string;
-    }[]
-    showUserFeedbackButtons?: boolean
+    index: number
 }
 
 
@@ -150,20 +138,16 @@ export interface RelevantDocs {
 }
 
 
-export default function QuestionAnswerSection({
-    question,
-    answer,
-    showUserFeedbackButtons,
-}: QuestionAnswerSectionProps) {
+export default function QuestionAnswerSection({index}: QuestionAnswerSectionProps) {
 
-    const getShowUserFeedbackButtons = showUserFeedbackButtons ?? true
-
+    const getShowUserFeedbackButtons = true
+    const chat = useContext(AnswerResponseContext)
 
     return (
         <>
-            <UserChatBox message={question} />
-            <AIAnswer answer={answer} />
-            {getShowUserFeedbackButtons && <FeedbackButtons answer={answer.map(a => a.answer).join("\n")} context={answer} />}
+            <UserChatBox message={chat?.[index]?.question ?? ""} />
+            <AIAnswer answer={chat?.[index]?.answer ?? ""} documents={chat?.[index]?.documents ?? []} />
+            {getShowUserFeedbackButtons && <FeedbackButtons answer={chat?.[index]?.question ?? ""} context={chat?.[index]?.documents ?? []} />}
         </>
     )
 }

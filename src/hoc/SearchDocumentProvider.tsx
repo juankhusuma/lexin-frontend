@@ -7,8 +7,6 @@ interface SearchDocumentContextType {
     setSearchResults: (results: SearchResult[]) => void
     loading: boolean
     setLoading: (loading: boolean) => void
-    status: string
-    setStatus: (status: string) => void
 }
 
 export const SearchDocumentContext = createContext<SearchDocumentContextType>({
@@ -16,17 +14,14 @@ export const SearchDocumentContext = createContext<SearchDocumentContextType>({
     setSearchResults: (results: SearchResult[]) => { },
     loading: true,
     setLoading: (loading: boolean) => { },
-    status: '',
-    setStatus: (status: string) => { }
 })
 
 export default function SearchDocumentProvider({ children }: { children: React.ReactNode }) {
     const [searchResults, setSearchResults] = useState<SearchResult[]>([])
     const [loading, setLoading] = useState<boolean>(true)
-    const [status, setStatus] = useState<string>('')
 
     return (
-        <SearchDocumentContext.Provider value={{ searchResults, setSearchResults, loading, setLoading, status, setStatus }}>
+        <SearchDocumentContext.Provider value={{ searchResults, setSearchResults, loading, setLoading}}>
             {children}
         </SearchDocumentContext.Provider>
     )

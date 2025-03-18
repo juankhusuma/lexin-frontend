@@ -1,7 +1,7 @@
 "use client";
 
-import { useContext, useEffect, useRef, useState } from "react";
-import QuestionAnswerSection, { RelevantDocs } from "../gen-ai/QuestionAnswerSection";
+import { createContext, useContext, useEffect, useState } from "react";
+import QuestionAnswerSection from "../gen-ai/QuestionAnswerSection";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ReactLoading from "react-loading";
 import { useAuth } from "@/contexts/authContext";
@@ -10,21 +10,22 @@ import { experimental_useObject as useObject } from 'ai/react';
 import { answerSchema } from "@/types/prompt/answerSchema";
 import { SearchResult } from "./DatabaseSearchResultSection";
 import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
-import { object, set } from "zod";
-import Link from "next/link";
-import { PHASE_DEVELOPMENT_SERVER } from 'next/constants.js'
 import { metapromptSchema } from "@/types/prompt/metapromptSchema";
 import { TooltipProvider } from "../ui/tooltip";
 
-interface AnswerResponse {
-    question: string;
-    answer: {
-        document_id: string;
-        answer: string;
-        page_number: number;
-        document_title: string;
+export interface AnswerResponse {
+    answer?: string
+    documents?: {
+        document_title?: string
+        document_id?: string
+        page_number?: number
+        excerpt?: string
     }[]
+    question?: string
+    status?: string
 }
+
+export const AnswerResponseContext = createContext<AnswerResponse[]>([]);
 
 export default function AIAnswerSection({ searchQuery }: { searchQuery: string, relatedDocs: SearchResult[] }) {
     const [followUpInput, setFollowUpInput] = useState("");
@@ -33,7 +34,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     const [chat, setChat] = useState<AnswerResponse[]>([]);
     const [chatIndex, setChatIndex] = useState<number>(-1);
     const [question, setQuestion] = useState<string>(searchQuery);
-    const { searchResults, loading: retrievalLoading, setSearchResults, status, setStatus, setLoading: setRetrievalLoading } = useContext(SearchDocumentContext)
+    const { searchResults, loading: retrievalLoading, setSearchResults, setLoading: setRetrievalLoading } = useContext(SearchDocumentContext)
     const { object: reply, submit, isLoading } = useObject({
         api: `${process.env.NEXT_PUBLIC_LLM_API_PATH!}/ask`,
         schema: answerSchema,
@@ -45,6 +46,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
 
     const authContext = useAuth();
     const isLoggedIn = !!authContext.accessToken;
+    const [state, setState] = useState<string>("");
 
     useEffect(() => {
         setIsClient(true); // Mark the component as client-rendered
@@ -56,17 +58,19 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
             const newChat = [...prev];
             newChat[chatIndex] = {
                 question: chat[chatIndex]?.question ?? "",
-                answer: (reply?.answer ?? []).filter((ans): ans is { document_id: string; answer: string; page_number: number; document_title: string } => ans !== undefined),
+                status: state,
+                answer: reply?.answer ?? "",
+                documents: reply?.documents?.filter(doc => doc !== undefined) ?? [],
             };
             return newChat;
         })
-    }, [reply, chatIndex])
+    }, [reply, chatIndex, state])
 
     useEffect(() => {
         if (!retrievalLoading && !isMetapromptLoading) {
             const conversation = chat.map(({ question, answer }) => ({
                 question,
-                answer: answer.map(({ answer }) => answer).join("\n"),
+                answer,
             }));
 
             submit({
@@ -87,10 +91,11 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                 setRetrievalLoading(true)
                 if (!metaprompt?.need_retrieval && !isMetapromptLoading) {
                     setRetrievalLoading(false)
-                    setStatus("Proses pencarian selesai, mulai menjawab pertanyaan")
+                    setState("Proses pencarian selesai, mulai menjawab pertanyaan")
                     setSearchResults([])
                     return;
                 }
+                setState("Memahami pertanyaan Anda...")
                 const embedResponse = await fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/embed`, {
                     method: 'POST',
                     headers: {
@@ -100,6 +105,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                         text: metaprompt?.vector_query,
                     })
                 });
+                setState("Menggali informasi...")
                 const results = await Promise.all([
                     fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/semantic`, {
                         method: 'POST',
@@ -134,6 +140,8 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                     docPageSet.add(`${page.document_id}-${page.page_number}`)
                     return true
                 })
+                setState(`${pagesData.flat().length} informasi ditemukan, menggali informasi lebih lanjut...`)
+
                 const expandedPages = (await Promise.all(uniquePages.map(async page => {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/page/${page.document_id}/${page.page_number}`)
                     return res.json()
@@ -149,8 +157,22 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                     docPageSet.add(`${page.document_id}-${page.page_number}`)
                     return true
                 })
+
+                const rerankedPagesResponse = await fetch(`${process.env.NEXT_PUBLIC_SEMANTIC_SEARCH_API_HOST}/rerank`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: metaprompt?.vector_query,
+                        passages: uniqueExpandedPages.flat(),
+                    })
+                })
+                const rerankedPages = await rerankedPagesResponse.json()
+                console.log(rerankedPages)
+                setState(`${rerankedPages.flat().length} informasi ditemukan, pencarian selesai`)
                 console.log(uniqueExpandedPages)
-                setSearchResults(uniqueExpandedPages)
+                setSearchResults(rerankedPages)
                 setRetrievalLoading(false)
                 setQuestion(question)
             }
@@ -159,47 +181,47 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
 
     function sendQuestion(question: string) {
         setQuestion(question)
-        setChat([...chat, { question, answer: [] }])
+        setChat([...chat, { question, status: "", answer: "", documents: [] }])
         submitMetaprompt({
             query: `
+            **Question**
             ${question}
 
-            <previous_question>
+            **Previous Questions**
             ${chat.map((qna, index) => (
-                `
-                    <question>${qna.question}</question>
-                    <answer>${qna.answer.map(ans => ans.answer).join("\n")}</answer>
-                `
-                ))}
-            </previous_question>
-            <latestsearch>
-            ${searchResults.map(doc => (
-                `
-                <sumber>
-                    <id>${doc.document_id}</id>
-                    <jenis_bentuk_peraturan>${doc.jenis_bentuk_peraturan}</jenis_bentuk_peraturan>
-                    <pemrakarsa>${doc.pemrakarsa}</pemrakarsa>
-                    <nomor>${doc.nomor}</nomor>
-                    <tahun>${doc.tahun}</tahun>
-                    <tentang>${doc.tentang}</tentang>
-                    <tempat_penetapan>${doc.tempat_penetapan}</tempat_penetapan>
-                    <ditetapkan_tanggal>${doc.ditetapkan_tanggal}</ditetapkan_tanggal>
-                    <pejabat_yang_menetapkan>${doc.pejabat_yang_menetapkan}</pejabat_yang_menetapkan>
-                    <status>${doc.status}</status>
-                    <url>${doc.url}</url>
-                    ${doc.dasar_hukum ? `<dasar_hukum>${doc.dasar_hukum.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</dasar_hukum>` : ''}
-                    ${doc.mengubah ? `<mengubah>${doc.mengubah.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</mengubah>` : ''}
-                    ${doc.diubah_oleh ? `<diubah_oleh>${doc.diubah_oleh.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</diubah_oleh>` : ''}
-                    ${doc.mencabut ? `<mencabut>${doc.mencabut.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</mencabut>` : ''}
-                    ${doc.dicabut_oleh ? `<dicabut_oleh>${doc.dicabut_oleh.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</dicabut_oleh>` : ''}
-                    ${doc.melaksanakan_amanat_peraturan ? `<melaksanakan_amanat_peraturan>${doc.melaksanakan_amanat_peraturan.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</melaksanakan_amanat_peraturan>` : ''}
-                    ${doc.dilaksanakan_oleh_peraturan_pelaksana ? `<dilaksanakan_oleh_peraturan_pelaksana>${doc.dilaksanakan_oleh_peraturan_pelaksana.map(dasar => `<ref>${dasar.ref}</ref><url>${dasar.url}</url><text>${dasar.text}</text>`).join('')}</dilaksanakan_oleh_peraturan_pelaksana>` : ''}
-                    <page_number>${doc.page_number}</page_number>
-                    <combined_body>${doc.combined_body}</combined_body>
-                </sumber>    
-                `
+            `
+            - **Question ${index+1}**
+                - **q**: ${qna.question}
+                - **a**: ${qna.answer}
+            `
             ))}
-            </latestsearch>
+            
+            **Latest Search Result**
+            ${searchResults.map((doc, i) => (
+            `
+            - **Sumber: ${i+1}**
+                - **ID:** ${doc.document_id}
+                - **Jenis Peraturan:** ${doc.jenis_bentuk_peraturan}
+                - **Pemrakarsa:** ${doc.pemrakarsa}
+                - **Nomor:** ${doc.nomor}
+                - **Tahun:** ${doc.tahun}
+                - **Tentang:** ${doc.tentang}
+                - **Tempat Penetapan:** ${doc.tempat_penetapan}
+                - **Tanggal Ditetapkan:** ${doc.ditetapkan_tanggal}
+                - **Pejabat:** ${doc.pejabat_yang_menetapkan}
+                - **Status:** ${doc.status}
+                - **URL:** ${doc.url}
+                - **Dasar Hukum:** ${doc.dasar_hukum ? JSON.stringify(doc.dasar_hukum) : ''}
+                - **Mengubah:** ${doc.mengubah ? JSON.stringify(doc.mengubah) : ''}
+                - **Diubah Oleh:** ${doc.diubah_oleh ? JSON.stringify(doc.diubah_oleh) : ''}
+                - **Mencabut:** ${doc.mencabut ? JSON.stringify(doc.mencabut) : ''}
+                - **Dicabut Oleh:** ${doc.dicabut_oleh ? JSON.stringify(doc.dicabut_oleh) : ''}
+                - **Melaksanakan Amanat:** ${doc.melaksanakan_amanat_peraturan ? JSON.stringify(doc.melaksanakan_amanat_peraturan) : ''}
+                - **Dilaksanakan Oleh:** ${doc.dilaksanakan_oleh_peraturan_pelaksana ? JSON.stringify(doc.dilaksanakan_oleh_peraturan_pelaksana) : ''}
+                - **Page Number:** ${doc.page_number}
+                - **Isi Dokumen:** ${doc.combined_body}
+            `
+            ))}
             `,
         })
     }
@@ -207,7 +229,8 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     useEffect(() => {
         setRetrievalLoading(true)
         if (isFirstQuestionSubmitted) return;
-        setChat([...chat, { question, answer: [] }])
+        setChat([...chat, { question, status: "", answer: "", documents: [] }])
+        setState("")
         if (!isFirstQuestionSubmitted) {
             submitMetaprompt({
                 query: question,
@@ -227,7 +250,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
     return (
         <div className="flex flex-col items-start mx-4 mt-4 mb-12 p-4 bg-light-blue rounded-xl">
             {/* {isLoggedIn ? ( */}
-            <>
+            <AnswerResponseContext.Provider value={chat}>
                 <TooltipProvider>
                     {chat.map((qna, index) => (
                         <>
@@ -236,10 +259,10 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                                 Lexin Chat:
                             </div>
                             <div>
-                                {status === "" ? "Loading..." : status}
+                                {qna.status === "" ? "Loading..." : qna.status}
                             </div>
                         </div>
-                        <QuestionAnswerSection key={index} question={qna.question} answer={qna?.answer ?? []} />
+                        <QuestionAnswerSection key={index} index={index} />
                         </>
                     ))}
                 </TooltipProvider>
@@ -263,7 +286,7 @@ export default function AIAnswerSection({ searchQuery }: { searchQuery: string, 
                         <Icon icon="mdi:search" style={{ fontSize: "20px" }} />
                     </div>
                 </div>
-            </>
+            </AnswerResponseContext.Provider>
             {/* )  */}
             {/* : (
                 <div className="flex flex-col justify-center items-center w-full py-6">
