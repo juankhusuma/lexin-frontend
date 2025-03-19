@@ -11,13 +11,23 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SearchDocumentContext } from "@/hoc/SearchDocumentProvider";
 
 interface ReferenceProps {
     documents: AnswerResponse["documents"];
 }
 
+function toTitleCase(str: string) {
+    return str.replace(
+      /\w\S*/g,
+      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+}
+
 function References({ documents }: ReferenceProps) {
+    const { searchResults } = useContext(SearchDocumentContext)
+    
     console.log(documents);
     if (!documents) return <></>;
 
@@ -45,7 +55,7 @@ function References({ documents }: ReferenceProps) {
         {
             docMap.size > 0 && Array.from(docMap).map(([docId, pages], index) => (
                 <AccordionItem className="!m-0 !p-0" value={`item-${index}`} key={docId}>
-                    <AccordionTrigger className="text-dark-navy-blue text-sm !my-0 border-2 px-3 rounded-md border-dark-navy-blue bg-opacity-80">{documents!.find(doc => doc.document_id === docId)?.document_title}</AccordionTrigger>
+                    <AccordionTrigger className="text-dark-navy-blue text-sm !my-0 border-2 px-3 rounded-md border-dark-navy-blue bg-opacity-80">{toTitleCase(searchResults!.find(doc => doc.document_id === docId)?.title ?? "")}</AccordionTrigger>
                     <AccordionContent className="border-2 px-3 !m-0 border-dark-navy-blue rounded-md">
                         <div className="text-sm">
                             {
@@ -83,7 +93,7 @@ function References({ documents }: ReferenceProps) {
 
 export default function AIAnswer({ answer, documents }: AnswerResponse) {
     const [citations, setCitationMap] = useState<string[]>([]);
-
+    const { searchResults } = useContext(SearchDocumentContext)
     return (
         <div
             className="text-dark-navy-blue mt-3 mb-1 ml-5 w-full pr-5 max-w-full prose"
@@ -109,7 +119,7 @@ export default function AIAnswer({ answer, documents }: AnswerResponse) {
                         return (
                             <CitationTooltip
                               index={citationNumber}
-                              document_title={doc.document_title as any}
+                              document_title={toTitleCase(searchResults.find((s) => s.document_id === doc.document_id)?.title ?? "")}
                               page_number={doc.page_number as any}
                               excerpt={doc.excerpt?.slice(0, 200) + '...'}
                             />

@@ -6,6 +6,8 @@ import copyToClipboard from "@/utils/copyToClipboard"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 import { AnswerResponse, AnswerResponseContext } from "../search-page/AIAnswerSection"
 
+
+
 function FeedbackButtons({ answer, context }: { answer: string, context: AnswerResponse["documents"] }) {
     const [liked, setLiked] = useState<boolean>(false)
     const [disliked, setDisliked] = useState<boolean>(false)
